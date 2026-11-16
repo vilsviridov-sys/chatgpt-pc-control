@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<title>ChatGPT PC Control</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090e1b;color:#edf2ff;font-family:Arial,sans-serif}
+header{padding:20px;background:#121c30;border-bottom:1px solid #293956}
+h1{font-size:22px;margin:0}
+.subtitle{color:#91a1bf;font-size:13px;margin-top:7px}
+main{max-width:900px;margin:auto;padding:20px}
+.panel{background:#121c30;border:1px solid #293956;border-radius:12px;padding:18px;margin-bottom:15px}
+.status{display:flex;align-items:center;gap:9px}
+.dot{width:10px;height:10px;border-radius:50%;background:#ffbd59}
+.muted{color:#91a1bf;font-size:13px}
+label{display:block;margin:15px 0 7px;font-size:14px}
+input,textarea{width:100%;padding:12px;background:#0b1426;color:white;border:1px solid #354766;border-radius:8px}
+textarea{min-height:110px;resize:vertical}
+button{padding:11px 16px;border:0;border-radius:8px;background:#6482ff;color:white;font-weight:bold}
+button:disabled{opacity:.5}
+#output{white-space:pre-wrap;overflow-wrap:anywhere;background:#0b1426;padding:12px;border-radius:8px;min-height:55px}
+</style>
+</head>
+<body>
+<header>
+  <h1>ChatGPT PC Control</h1>
+  <div class="subtitle">Панель подключения к Windows-агенту</div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Подключение</h2>
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Не подключено</span>
+    </div>
+    <p class="muted">Укажи адрес сервера агента, запущенного на ноутбуке.</p>
+
+    <label for="server">Адрес агента</label>
+    <input id="server" type="url" placeholder="http://192.168.1.10:8765">
+
+    <div style="margin-top:12px">
+      <button id="connectButton">Проверить подключение</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Команда</h2>
+    <p class="muted">Команда будет отправлена только после подтверждения.</p>
+
+    <label for="command">Текст команды</label>
+    <textarea id="command" placeholder="Например: покажи список файлов в папке Документы"></textarea>
+
+    <div style="margin-top:12px">
+      <button id="sendButton">Отправить команду</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Ответ агента</h2>
+    <div id="output">Здесь появится результат запроса.</div>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+const serverInput = document.getElementById("server");
+const commandInput = document.getElementById("command");
+const connectButton = document.getElementById("connectButton");
+const sendButton = document.getElementById("sendButton");
+const statusText = document.getElementById("statusText");
+const statusDot = document.getElementById("statusDot");
+const output = document.getElementById("output");
+
+let connected = false;
+
+function setConnectionState(isConnected, message) {
+  connected = isConnected;
+  statusText.textContent = message;
+  statusDot.style.background = isConnected ? "#39d99b" : "#ff687d";
+}
+
+function getServerAddress() {
+  const address = serverInput.value.trim();
+
+  if (!address) {
+    throw new Error("Укажи адрес агента.");
+  }
+
+  const parsed = new URL(address);
+
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("Разрешены только HTTP и HTTPS.");
+  }
+
+  return parsed.origin;
+}
+
+async function requestAgent(path, options = {}) {
+  const address = getServerAddress();
+
+  const response = await fetch(address + path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers
+    }
+  });
+
+  const responseText = await response.text();
+
+  if (!response.ok) {
+    throw new Error("Ошибка сервера: " + response.status + " " + responseText);
+  }
+
+  try {
+    return JSON.parse(responseText);
+  } catch {
+    throw new Error("Сервер вернул некорректный JSON.");
+  }
+}
+
+connectButton.addEventListener("click", async () => {
+  connectButton.disabled = true;
+  setConnectionState(false, "Проверяем подключение...");
+  output.textContent = "Выполняется проверка...";
+
+  try {
+    const result = await requestAgent("/health");
+    setConnectionState(true, "Агент подключён");
+    output.textContent = JSON.stringify(result, null, 2);
+  } catch (error) {
+    setConnectionState(false, "Нет подключения");
+    output.textContent = error.message;
+  } finally {
+    connectButton.disabled = false;
+  }
+});
+
+sendButton.addEventListener("click", async () => {
+  if (!connected) {
+    output.textContent = "Сначала проверь подключение к агенту.";
+    return;
+  }
+
+  const command = commandInput.value.trim();
+
+  if (!command) {
+    output.textContent = "Введи команду.";
+    return;
+  }
+
+  const approved = confirm(
+    "Отправить эту команду агенту?\n\n" + command
+  );
+
+  if (!approved) return;
+
+  sendButton.disabled = true;
+  output.textContent = "Отправляем команду...";
+
+  try {
+    const result = await requestAgent("/command", {
+      method: "POST",
+      body: JSON.stringify({ command })
+    });
+
+    output.textContent = JSON.stringify(result, null, 2);
+  } catch (error) {
+    output.textContent = error.message;
+  } finally {
+    sendButton.disabled = false;
+  }
+});
+</script>
+</body>
+      </html>
