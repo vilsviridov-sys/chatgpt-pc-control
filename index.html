@@ -4,142 +4,310 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#090e1b">
-<title>JARVIS Tablet</title>
+<title>ChatGPT PC Control</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#090e1b;color:#edf2ff;font-family:Arial,sans-serif}
-header{padding:20px;background:#121c30;border-bottom:1px solid #293956}
+
+body{
+  margin:0;
+  background:#090e1b;
+  color:#edf2ff;
+  font-family:Arial,sans-serif;
+}
+
+header{
+  padding:20px;
+  background:#121c30;
+  border-bottom:1px solid #293956;
+}
+
 header h1{margin:0;font-size:25px}
 header p{margin:7px 0 0;color:#91a1bf;font-size:13px}
-nav{display:flex;gap:8px;padding:12px;overflow-x:auto;background:#0e1729}
-nav button{flex-shrink:0;background:#1b2942;color:#cbd7ef;border:0;padding:12px 16px;border-radius:9px}
-nav button.active{background:#6482ff;color:white}
-main{max-width:850px;margin:auto;padding:16px}
+
+nav{
+  display:flex;
+  gap:8px;
+  padding:12px;
+  overflow-x:auto;
+  background:#0e1729;
+}
+
+nav button{
+  flex-shrink:0;
+  background:#1b2942;
+  color:#cbd7ef;
+  border:0;
+  padding:12px 16px;
+  border-radius:9px;
+}
+
+nav button.active{
+  background:#6482ff;
+  color:white;
+}
+
+main{
+  max-width:850px;
+  margin:auto;
+  padding:16px;
+}
+
 .page{display:none}
 .page.active{display:block}
-.panel{background:#121c30;border:1px solid #293956;border-radius:13px;padding:17px;margin-bottom:15px}
+
+.panel{
+  background:#121c30;
+  border:1px solid #293956;
+  border-radius:13px;
+  padding:17px;
+  margin-bottom:15px;
+}
+
 h2{font-size:19px;margin:0 0 14px}
-input,textarea{width:100%;padding:13px;background:#0b1426;color:white;border:1px solid #354766;border-radius:9px;font-size:15px}
-textarea{min-height:120px;resize:vertical}
+
+input,textarea{
+  width:100%;
+  padding:13px;
+  background:#0b1426;
+  color:white;
+  border:1px solid #354766;
+  border-radius:9px;
+  font-size:15px;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
 button{cursor:pointer;font-size:14px}
-.action{padding:12px 16px;border:0;border-radius:9px;background:#6482ff;color:white;font-weight:bold}
+
+.action{
+  padding:12px 16px;
+  border:0;
+  border-radius:9px;
+  background:#6482ff;
+  color:white;
+  font-weight:bold;
+}
+
 .secondary{background:#263650;color:white}
 .danger{background:#632c3b;color:white}
-.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+
+.row{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
 .row input{flex:1;min-width:150px}
+
 .muted{color:#91a1bf;font-size:13px}
-#chat{height:330px;overflow-y:auto;background:#0b1426;border-radius:10px;padding:12px;margin-bottom:12px}
-.msg{padding:11px;margin-bottom:9px;border-radius:9px;white-space:pre-wrap;overflow-wrap:anywhere}
+
+#chat{
+  height:330px;
+  overflow-y:auto;
+  background:#0b1426;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+}
+
+.msg{
+  padding:11px;
+  margin-bottom:9px;
+  border-radius:9px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
 .user{background:#263b61}
 .bot{background:#1a2940}
-.task{display:flex;gap:10px;align-items:center;padding:12px;background:#0b1426;border-radius:9px;margin-top:8px}
+
+.task{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  background:#0b1426;
+  border-radius:9px;
+  margin-top:8px;
+}
+
 .task span{flex:1;overflow-wrap:anywhere}
-.task.done span{text-decoration:line-through;color:#91a1bf}
-#clock{font-size:34px;font-weight:bold;margin:8px 0}
-footer{text-align:center;color:#687b9b;padding:25px;font-size:12px}
+.task.done span{
+  text-decoration:line-through;
+  color:#91a1bf;
+}
+
+#clock{
+  font-size:34px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+footer{
+  text-align:center;
+  color:#687b9b;
+  padding:25px;
+  font-size:12px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>JARVIS</h1>
-<p>Планшетный интеллектуальный помощник</p>
+  <h1>ChatGPT PC Control</h1>
+  <p>Интеллектуальный помощник для планшета</p>
 </header>
 
 <nav>
-<button class="active" data-page="home">Главная</button>
-<button data-page="assistant">Помощник</button>
-<button data-page="notes">Заметки</button>
-<button data-page="tasks">Задачи</button>
-<button data-page="tools">Инструменты</button>
+  <button class="active" data-page="home">Главная</button>
+  <button data-page="assistant">Помощник</button>
+  <button data-page="notes">Заметки</button>
+  <button data-page="tasks">Задачи</button>
+  <button data-page="tools">Инструменты</button>
 </nav>
 
 <main>
 
 <section class="page active" id="home">
-<div class="panel">
-<p class="muted">ТЕКУЩЕЕ ВРЕМЯ</p>
-<div id="clock">--:--:--</div>
-<div id="date" class="muted"></div>
-</div>
 
-<div class="panel">
-<h2>Система</h2>
-<p id="systemStatus">Панель запущена.</p>
-<p class="muted">Данные хранятся в памяти браузера на этом устройстве.</p>
-</div>
+  <div class="panel">
+    <p class="muted">ТЕКУЩЕЕ ВРЕМЯ</p>
+    <div id="clock">--:--:--</div>
+    <div id="date" class="muted"></div>
+  </div>
 
-<div class="panel">
-<h2>Быстрый запуск</h2>
-<div class="row">
-<button class="action" onclick="showPage('assistant')">Открыть помощника</button>
-<button class="action secondary" onclick="showPage('notes')">Мои заметки</button>
-</div>
-</div>
+  <div class="panel">
+    <h2>Система</h2>
+    <p id="systemStatus">Панель запущена.</p>
+    <p class="muted">
+      Данные хранятся в памяти браузера на этом устройстве.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2>Быстрый запуск</h2>
+    <div class="row">
+      <button class="action" onclick="showPage('assistant')">
+        Открыть помощника
+      </button>
+      <button class="action secondary" onclick="showPage('notes')">
+        Мои заметки
+      </button>
+    </div>
+  </div>
+
 </section>
 
 <section class="page" id="assistant">
-<div class="panel">
-<h2>Диалог с JARVIS</h2>
-<div id="chat">
-<div class="msg bot">Привет! Я JARVIS. Пока я работаю локально и умею выполнять встроенные команды.</div>
-</div>
-<input id="message" placeholder="Напиши команду..." autocomplete="off">
-<div class="row">
-<button class="action" onclick="sendMessage()">Отправить</button>
-<button class="action secondary" onclick="startVoice()">Голос</button>
-<button class="action secondary" onclick="stopSpeaking()">Остановить звук</button>
-</div>
-<p class="muted">Примеры: «время», «дата», «посчитай 25*4», «создай заметку купить хлеб».</p>
-</div>
+
+  <div class="panel">
+    <h2>Диалог с ChatGPT Assistant</h2>
+
+    <div id="chat">
+      <div class="msg bot">
+        Привет! Я ChatGPT Assistant.
+        Пока я работаю локально и умею выполнять встроенные команды.
+      </div>
+    </div>
+
+    <input
+      id="message"
+      placeholder="Напиши команду..."
+      autocomplete="off"
+    >
+
+    <div class="row">
+      <button class="action" onclick="sendMessage()">Отправить</button>
+      <button class="action secondary" onclick="startVoice()">Голос</button>
+      <button class="action secondary" onclick="stopSpeaking()">
+        Остановить звук
+      </button>
+    </div>
+
+    <p class="muted">
+      Примеры: «время», «дата», «посчитай 25*4»,
+      «создай заметку купить хлеб».
+    </p>
+  </div>
+
 </section>
 
 <section class="page" id="notes">
-<div class="panel">
-<h2>Заметки</h2>
-<textarea id="noteText" placeholder="Напиши свою заметку..."></textarea>
-<div class="row">
-<button class="action" onclick="saveNote()">Сохранить заметку</button>
-<button class="action secondary" onclick="clearNote()">Очистить поле</button>
-</div>
-</div>
-<div class="panel">
-<h2>Сохранённые заметки</h2>
-<div id="notesList"></div>
-</div>
+
+  <div class="panel">
+    <h2>Заметки</h2>
+
+    <textarea id="noteText" placeholder="Напиши свою заметку..."></textarea>
+
+    <div class="row">
+      <button class="action" onclick="saveNote()">
+        Сохранить заметку
+      </button>
+      <button class="action secondary" onclick="clearNote()">
+        Очистить поле
+      </button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Сохранённые заметки</h2>
+    <div id="notesList"></div>
+  </div>
+
 </section>
 
 <section class="page" id="tasks">
-<div class="panel">
-<h2>Список задач</h2>
-<div class="row">
-<input id="taskInput" placeholder="Новая задача...">
-<button class="action" onclick="addTask()">Добавить</button>
-</div>
-<div id="tasksList"></div>
-</div>
+
+  <div class="panel">
+    <h2>Список задач</h2>
+
+    <div class="row">
+      <input id="taskInput" placeholder="Новая задача...">
+      <button class="action" onclick="addTask()">Добавить</button>
+    </div>
+
+    <div id="tasksList"></div>
+  </div>
+
 </section>
 
 <section class="page" id="tools">
-<div class="panel">
-<h2>Калькулятор</h2>
-<input id="calcInput" inputmode="decimal" placeholder="Например: (25+15)*3">
-<div class="row">
-<button class="action" onclick="calculate()">Посчитать</button>
-<button class="action secondary" onclick="document.getElementById('calcInput').value=''">Очистить</button>
-</div>
-<p id="calcResult">Результат появится здесь.</p>
-</div>
 
-<div class="panel">
-<h2>Информация об устройстве</h2>
-<p id="deviceInfo" class="muted"></p>
-</div>
+  <div class="panel">
+    <h2>Калькулятор</h2>
+
+    <input
+      id="calcInput"
+      inputmode="decimal"
+      placeholder="Например: (25+15)*3"
+    >
+
+    <div class="row">
+      <button class="action" onclick="calculate()">Посчитать</button>
+      <button class="action secondary" onclick="clearCalculator()">
+        Очистить
+      </button>
+    </div>
+
+    <p id="calcResult">Результат появится здесь.</p>
+  </div>
+
+  <div class="panel">
+    <h2>Информация об устройстве</h2>
+    <p id="deviceInfo" class="muted"></p>
+  </div>
+
 </section>
 
 </main>
 
-<footer>JARVIS Tablet · Версия 1.0</footer>
+<footer>ChatGPT PC Control · Версия 1.0</footer>
 
 <script>
 "use strict";
@@ -156,11 +324,17 @@ function loadData(key, fallback) {
 }
 
 function storeData(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    alert("Не удалось сохранить данные в браузере.");
+    return false;
+  }
 }
 
-let notes = loadData("jarvis_notes", []);
-let tasks = loadData("jarvis_tasks", []);
+let notes = loadData("chatgpt_pc_control_notes", []);
+let tasks = loadData("chatgpt_pc_control_tasks", []);
 
 function showPage(name) {
   document.querySelectorAll(".page").forEach(page => {
@@ -173,18 +347,24 @@ function showPage(name) {
 }
 
 document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
+  button.addEventListener("click", () => {
+    showPage(button.dataset.page);
+  });
 });
 
 function updateClock() {
   const now = new Date();
-  $("clock").textContent = now.toLocaleTimeString("ru-RU");
-  $("date").textContent = now.toLocaleDateString("ru-RU", {
-    weekday:"long",
-    day:"numeric",
-    month:"long",
-    year:"numeric"
-  });
+
+  $("clock").textContent =
+    now.toLocaleTimeString("ru-RU");
+
+  $("date").textContent =
+    now.toLocaleDateString("ru-RU", {
+      weekday:"long",
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    });
 }
 
 updateClock();
@@ -192,33 +372,42 @@ setInterval(updateClock, 1000);
 
 function addMessage(text, type) {
   const message = document.createElement("div");
+
   message.className = "msg " + type;
   message.textContent = text;
+
   $("chat").appendChild(message);
   $("chat").scrollTop = $("chat").scrollHeight;
 }
 
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
+
   speechSynthesis.cancel();
+
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "ru-RU";
+
   speechSynthesis.speak(utterance);
 }
 
 function stopSpeaking() {
-  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
 }
 
 function sendMessage() {
   const input = $("message");
   const text = input.value.trim();
+
   if (!text) return;
 
   input.value = "";
   addMessage(text, "user");
 
   const answer = processCommand(text);
+
   addMessage(answer, "bot");
 }
 
@@ -243,6 +432,7 @@ function processCommand(text) {
 
   if (command.startsWith("посчитай ")) {
     const expression = text.slice("посчитай ".length);
+
     try {
       return "Результат: " + evaluateExpression(expression);
     } catch {
@@ -252,23 +442,41 @@ function processCommand(text) {
 
   if (command.startsWith("создай заметку ")) {
     const content = text.slice("создай заметку ".length).trim();
+
     if (!content) return "Напиши содержание заметки.";
-    notes.push({text:content, date:new Date().toLocaleString("ru-RU")});
-    storeData("jarvis_notes", notes);
+
+    notes.push({
+      text:content,
+      date:new Date().toLocaleString("ru-RU")
+    });
+
+    if (!storeData("chatgpt_pc_control_notes", notes)) {
+      notes.pop();
+      return "Не удалось сохранить заметку.";
+    }
+
     renderNotes();
     return "Заметка сохранена.";
   }
 
   if (command === "помощь") {
-    return "Доступные команды:\nвремя\nдата\nпосчитай 2+2\nсоздай заметку текст\n\nЯ пока не являюсь полноценной языковой моделью.";
+    return "Доступные команды:\n" +
+      "время\n" +
+      "дата\n" +
+      "посчитай 2+2\n" +
+      "создай заметку текст\n\n" +
+      "Я пока не являюсь полноценной языковой моделью.";
   }
 
-  return "Я пока не умею самостоятельно отвечать на произвольные вопросы. Попробуй команду «помощь». Для настоящего ИИ потребуется подключение языковой модели.";
+  return "Я пока не умею самостоятельно отвечать на произвольные вопросы. " +
+    "Попробуй команду «помощь». Для настоящего ИИ потребуется подключение языковой модели.";
 }
 
 function evaluateExpression(expression) {
-  const tokens = expression.match(/\d+(?:[.,]\d+)?|[()+\-*/]/g);
-  if (!tokens || tokens.join("") !== expression.replace(/\s/g, "").replace(/,/g, ".")) {
+  const normalized = expression.replace(/\s/g, "").replace(/,/g, ".");
+  const tokens = normalized.match(/\d+(?:\.\d+)?|[()+\-*/]/g);
+
+  if (!tokens || tokens.join("") !== normalized) {
     throw new Error("Некорректное выражение");
   }
 
@@ -282,25 +490,40 @@ function evaluateExpression(expression) {
 
     if (token === "(") {
       const value = sum();
-      if (tokens[position++] !== ")") throw new Error("Скобки");
+
+      if (tokens[position++] !== ")") {
+        throw new Error("Скобки");
+      }
+
       return value;
     }
 
     const number = Number(token);
-    if (!Number.isFinite(number)) throw new Error("Число");
+
+    if (!Number.isFinite(number)) {
+      throw new Error("Число");
+    }
+
     return number;
   }
 
   function product() {
     let value = factor();
 
-    while (tokens[position] === "*" || tokens[position] === "/") {
+    while (
+      tokens[position] === "*" ||
+      tokens[position] === "/"
+    ) {
       const operator = tokens[position++];
       const right = factor();
 
-      if (operator === "/" && right === 0) throw new Error("Деление на ноль");
+      if (operator === "/" && right === 0) {
+        throw new Error("Деление на ноль");
+      }
 
-      value = operator === "*" ? value * right : value / right;
+      value = operator === "*" ?
+        value * right :
+        value / right;
     }
 
     return value;
@@ -309,10 +532,16 @@ function evaluateExpression(expression) {
   function sum() {
     let value = product();
 
-    while (tokens[position] === "+" || tokens[position] === "-") {
+    while (
+      tokens[position] === "+" ||
+      tokens[position] === "-"
+    ) {
       const operator = tokens[position++];
       const right = product();
-      value = operator === "+" ? value + right : value - right;
+
+      value = operator === "+" ?
+        value + right :
+        value - right;
     }
 
     return value;
@@ -332,20 +561,36 @@ function calculate() {
     $("calcResult").textContent =
       "Результат: " + evaluateExpression($("calcInput").value);
   } catch {
-    $("calcResult").textContent = "Ошибка. Проверь математическое выражение.";
+    $("calcResult").textContent =
+      "Ошибка. Проверь математическое выражение.";
   }
+}
+
+function clearCalculator() {
+  $("calcInput").value = "";
+  $("calcResult").textContent = "Результат появится здесь.";
 }
 
 function saveNote() {
   const text = $("noteText").value.trim();
-  if (!text) return alert("Сначала напиши заметку.");
 
-  notes.push({
+  if (!text) {
+    alert("Сначала напиши заметку.");
+    return;
+  }
+
+  const note = {
     text,
     date:new Date().toLocaleString("ru-RU")
-  });
+  };
 
-  storeData("jarvis_notes", notes);
+  notes.push(note);
+
+  if (!storeData("chatgpt_pc_control_notes", notes)) {
+    notes.pop();
+    return;
+  }
+
   $("noteText").value = "";
   renderNotes();
 }
@@ -355,8 +600,13 @@ function clearNote() {
 }
 
 function deleteNote(index) {
-  notes.splice(index, 1);
-  storeData("jarvis_notes", notes);
+  const removed = notes.splice(index, 1);
+
+  if (!storeData("chatgpt_pc_control_notes", notes)) {
+    notes.splice(index, 0, ...removed);
+    return;
+  }
+
   renderNotes();
 }
 
@@ -393,23 +643,42 @@ function renderNotes() {
 function addTask() {
   const input = $("taskInput");
   const text = input.value.trim();
+
   if (!text) return;
 
-  tasks.push({text, done:false});
-  storeData("jarvis_tasks", tasks);
+  tasks.push({
+    text,
+    done:false
+  });
+
+  if (!storeData("chatgpt_pc_control_tasks", tasks)) {
+    tasks.pop();
+    return;
+  }
+
   input.value = "";
   renderTasks();
 }
 
 function toggleTask(index) {
   tasks[index].done = !tasks[index].done;
-  storeData("jarvis_tasks", tasks);
+
+  if (!storeData("chatgpt_pc_control_tasks", tasks)) {
+    tasks[index].done = !tasks[index].done;
+    return;
+  }
+
   renderTasks();
 }
 
 function deleteTask(index) {
-  tasks.splice(index, 1);
-  storeData("jarvis_tasks", tasks);
+  const removed = tasks.splice(index, 1);
+
+  if (!storeData("chatgpt_pc_control_tasks", tasks)) {
+    tasks.splice(index, 0, ...removed);
+    return;
+  }
+
   renderTasks();
 }
 
@@ -447,25 +716,35 @@ function renderTasks() {
 
 function startVoice() {
   const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    addMessage("Голосовое распознавание не поддерживается этим браузером.", "bot");
+    addMessage(
+      "Голосовое распознавание не поддерживается этим браузером.",
+      "bot"
+    );
     return;
   }
 
   const recognition = new SpeechRecognition();
+
   recognition.lang = "ru-RU";
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
 
   recognition.onresult = event => {
-    $("message").value = event.results[0][0].transcript;
+    $("message").value =
+      event.results[0][0].transcript;
+
     sendMessage();
   };
 
   recognition.onerror = () => {
-    addMessage("Не удалось распознать речь. Проверь разрешение микрофона.", "bot");
+    addMessage(
+      "Не удалось распознать речь. Проверь разрешение микрофона.",
+      "bot"
+    );
   };
 
   recognition.start();
@@ -478,7 +757,8 @@ $("deviceInfo").textContent =
 
 renderNotes();
 renderTasks();
+
 </script>
 
 </body>
-</html>
+  </html>
