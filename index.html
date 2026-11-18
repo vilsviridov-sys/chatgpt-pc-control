@@ -3,156 +3,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090e1b">
+<meta name="theme-color" content="#080e1b">
 <title>ChatGPT PC Control</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#090e1b;
-  color:#edf2ff;
-  font-family:Arial,sans-serif;
+* {
+  box-sizing: border-box;
 }
 
-header{
-  padding:20px;
-  background:#121c30;
-  border-bottom:1px solid #293956;
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #080e1b;
+  color: #edf2ff;
+  font-family: Arial, sans-serif;
 }
 
-header h1{margin:0;font-size:25px}
-header p{margin:7px 0 0;color:#91a1bf;font-size:13px}
-
-nav{
-  display:flex;
-  gap:8px;
-  padding:12px;
-  overflow-x:auto;
-  background:#0e1729;
+header {
+  padding: 19px;
+  background: #111c30;
+  border-bottom: 1px solid #293956;
 }
 
-nav button{
-  flex-shrink:0;
-  background:#1b2942;
-  color:#cbd7ef;
-  border:0;
-  padding:12px 16px;
-  border-radius:9px;
+header h1 {
+  margin: 0;
+  font-size: 22px;
 }
 
-nav button.active{
-  background:#6482ff;
-  color:white;
+header p {
+  margin: 7px 0 0;
+  color: #91a1bf;
+  font-size: 13px;
 }
 
-main{
-  max-width:850px;
-  margin:auto;
-  padding:16px;
+main {
+  max-width: 850px;
+  margin: auto;
+  padding: 15px;
 }
 
-.page{display:none}
-.page.active{display:block}
-
-.panel{
-  background:#121c30;
-  border:1px solid #293956;
-  border-radius:13px;
-  padding:17px;
-  margin-bottom:15px;
+.panel {
+  background: #111c30;
+  border: 1px solid #293956;
+  border-radius: 13px;
+  padding: 16px;
+  margin-bottom: 14px;
 }
 
-h2{font-size:19px;margin:0 0 14px}
-
-input,textarea{
-  width:100%;
-  padding:13px;
-  background:#0b1426;
-  color:white;
-  border:1px solid #354766;
-  border-radius:9px;
-  font-size:15px;
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #a9bad6;
+  margin: 10px 0;
 }
 
-textarea{
-  min-height:120px;
-  resize:vertical;
+.dot {
+  width: 9px;
+  height: 9px;
+  background: #39d99b;
+  border-radius: 50%;
 }
 
-button{cursor:pointer;font-size:14px}
-
-.action{
-  padding:12px 16px;
-  border:0;
-  border-radius:9px;
-  background:#6482ff;
-  color:white;
-  font-weight:bold;
+#chat {
+  height: 48vh;
+  min-height: 260px;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 12px;
+  background: #091323;
+  border-radius: 10px;
+  margin-bottom: 12px;
 }
 
-.secondary{background:#263650;color:white}
-.danger{background:#632c3b;color:white}
-
-.row{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-top:12px;
+.message {
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
 }
 
-.row input{flex:1;min-width:150px}
-
-.muted{color:#91a1bf;font-size:13px}
-
-#chat{
-  height:330px;
-  overflow-y:auto;
-  background:#0b1426;
-  border-radius:10px;
-  padding:12px;
-  margin-bottom:12px;
+.user {
+  background: #263b61;
+  margin-left: 25px;
 }
 
-.msg{
-  padding:11px;
-  margin-bottom:9px;
-  border-radius:9px;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
+.assistant {
+  background: #1a2940;
+  margin-right: 25px;
 }
 
-.user{background:#263b61}
-.bot{background:#1a2940}
-
-.task{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  padding:12px;
-  background:#0b1426;
-  border-radius:9px;
-  margin-top:8px;
+input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #354766;
+  border-radius: 10px;
+  background: #091323;
+  color: white;
+  font-size: 16px;
+  outline: none;
 }
 
-.task span{flex:1;overflow-wrap:anywhere}
-.task.done span{
-  text-decoration:line-through;
-  color:#91a1bf;
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 13px 15px;
+  background: #6482ff;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-#clock{
-  font-size:34px;
-  font-weight:bold;
-  margin:8px 0;
+button:disabled {
+  opacity: .5;
 }
 
-footer{
-  text-align:center;
-  color:#687b9b;
-  padding:25px;
-  font-size:12px;
+.secondary {
+  background: #263650;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 11px;
+}
+
+.row button {
+  flex: 1;
+}
+
+h2 {
+  font-size: 17px;
+  margin: 0 0 12px;
+}
+
+.info {
+  color: #91a1bf;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#deviceStatus {
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+footer {
+  text-align: center;
+  color: #687b9b;
+  padding: 20px;
+  font-size: 12px;
+}
+
+@media(max-width:450px) {
+  header h1 {
+    font-size: 19px;
+  }
+
+  .row button {
+    min-width: 40%;
+  }
 }
 </style>
 </head>
@@ -161,558 +176,300 @@ footer{
 
 <header>
   <h1>ChatGPT PC Control</h1>
-  <p>Интеллектуальный помощник для планшета</p>
+  <p>Планшетный помощник</p>
 </header>
-
-<nav>
-  <button class="active" data-page="home">Главная</button>
-  <button data-page="assistant">Помощник</button>
-  <button data-page="notes">Заметки</button>
-  <button data-page="tasks">Задачи</button>
-  <button data-page="tools">Инструменты</button>
-</nav>
 
 <main>
 
-<section class="page active" id="home">
+  <section class="panel">
+    <h2>Состояние планшета</h2>
 
-  <div class="panel">
-    <p class="muted">ТЕКУЩЕЕ ВРЕМЯ</p>
-    <div id="clock">--:--:--</div>
-    <div id="date" class="muted"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Система</h2>
-    <p id="systemStatus">Панель запущена.</p>
-    <p class="muted">
-      Данные хранятся в памяти браузера на этом устройстве.
-    </p>
-  </div>
-
-  <div class="panel">
-    <h2>Быстрый запуск</h2>
-    <div class="row">
-      <button class="action" onclick="showPage('assistant')">
-        Открыть помощника
-      </button>
-      <button class="action secondary" onclick="showPage('notes')">
-        Мои заметки
-      </button>
+    <div class="status">
+      <span class="dot" id="onlineDot"></span>
+      <span id="connectionStatus">Проверка подключения...</span>
     </div>
-  </div>
 
-</section>
+    <div id="deviceStatus" class="info">
+      Получение информации...
+    </div>
+  </section>
 
-<section class="page" id="assistant">
-
-  <div class="panel">
-    <h2>Диалог с ChatGPT Assistant</h2>
+  <section class="panel">
+    <h2>Помощник</h2>
 
     <div id="chat">
-      <div class="msg bot">
-        Привет! Я ChatGPT Assistant.
-        Пока я работаю локально и умею выполнять встроенные команды.
+      <div class="message assistant">
+        Привет! Я помощник ChatGPT PC Control.
+
+        Я могу выполнять некоторые действия в браузере планшета.
+
+        Напиши «помощь», чтобы увидеть доступные команды.
       </div>
     </div>
 
     <input
-      id="message"
+      id="messageInput"
+      type="text"
       placeholder="Напиши команду..."
       autocomplete="off"
     >
 
     <div class="row">
-      <button class="action" onclick="sendMessage()">Отправить</button>
-      <button class="action secondary" onclick="startVoice()">Голос</button>
-      <button class="action secondary" onclick="stopSpeaking()">
-        Остановить звук
+      <button id="sendButton">Отправить</button>
+      <button id="voiceButton" class="secondary">Голос</button>
+    </div>
+
+    <div class="row">
+      <button id="stopButton" class="secondary">
+        Остановить голос
+      </button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Управление планшетом</h2>
+
+    <div class="row">
+      <button id="fullscreenButton">
+        Полный экран
+      </button>
+
+      <button id="vibrationButton" class="secondary">
+        Проверить вибрацию
       </button>
     </div>
 
-    <p class="muted">
-      Примеры: «время», «дата», «посчитай 25*4»,
-      «создай заметку купить хлеб».
+    <div class="row">
+      <button id="wakeButton" class="secondary">
+        Не выключать экран
+      </button>
+    </div>
+
+    <p id="controlStatus" class="info">
+      Управление доступно в пределах возможностей браузера.
     </p>
-  </div>
-
-</section>
-
-<section class="page" id="notes">
-
-  <div class="panel">
-    <h2>Заметки</h2>
-
-    <textarea id="noteText" placeholder="Напиши свою заметку..."></textarea>
-
-    <div class="row">
-      <button class="action" onclick="saveNote()">
-        Сохранить заметку
-      </button>
-      <button class="action secondary" onclick="clearNote()">
-        Очистить поле
-      </button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>Сохранённые заметки</h2>
-    <div id="notesList"></div>
-  </div>
-
-</section>
-
-<section class="page" id="tasks">
-
-  <div class="panel">
-    <h2>Список задач</h2>
-
-    <div class="row">
-      <input id="taskInput" placeholder="Новая задача...">
-      <button class="action" onclick="addTask()">Добавить</button>
-    </div>
-
-    <div id="tasksList"></div>
-  </div>
-
-</section>
-
-<section class="page" id="tools">
-
-  <div class="panel">
-    <h2>Калькулятор</h2>
-
-    <input
-      id="calcInput"
-      inputmode="decimal"
-      placeholder="Например: (25+15)*3"
-    >
-
-    <div class="row">
-      <button class="action" onclick="calculate()">Посчитать</button>
-      <button class="action secondary" onclick="clearCalculator()">
-        Очистить
-      </button>
-    </div>
-
-    <p id="calcResult">Результат появится здесь.</p>
-  </div>
-
-  <div class="panel">
-    <h2>Информация об устройстве</h2>
-    <p id="deviceInfo" class="muted"></p>
-  </div>
-
-</section>
+  </section>
 
 </main>
 
-<footer>ChatGPT PC Control · Версия 1.0</footer>
+<footer>
+  ChatGPT PC Control · Версия 2.0
+</footer>
 
 <script>
 "use strict";
 
 const $ = id => document.getElementById(id);
 
-function loadData(key, fallback) {
-  try {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function storeData(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-    return true;
-  } catch {
-    alert("Не удалось сохранить данные в браузере.");
-    return false;
-  }
-}
-
-let notes = loadData("chatgpt_pc_control_notes", []);
-let tasks = loadData("chatgpt_pc_control_tasks", []);
-
-function showPage(name) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.toggle("active", page.id === name);
-  });
-
-  document.querySelectorAll("nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === name);
-  });
-}
-
-document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => {
-    showPage(button.dataset.page);
-  });
-});
-
-function updateClock() {
-  const now = new Date();
-
-  $("clock").textContent =
-    now.toLocaleTimeString("ru-RU");
-
-  $("date").textContent =
-    now.toLocaleDateString("ru-RU", {
-      weekday:"long",
-      day:"numeric",
-      month:"long",
-      year:"numeric"
-    });
-}
-
-updateClock();
-setInterval(updateClock, 1000);
+let wakeLock = null;
+let recognition = null;
 
 function addMessage(text, type) {
-  const message = document.createElement("div");
+  const element = document.createElement("div");
 
-  message.className = "msg " + type;
-  message.textContent = text;
+  element.className = "message " + type;
+  element.textContent = text;
 
-  $("chat").appendChild(message);
+  $("chat").appendChild(element);
   $("chat").scrollTop = $("chat").scrollHeight;
 }
 
 function speak(text) {
-  if (!("speechSynthesis" in window)) return;
+  if (!("speechSynthesis" in window)) {
+    return;
+  }
 
   speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "ru-RU";
+  utterance.rate = 1;
 
   speechSynthesis.speak(utterance);
 }
 
-function stopSpeaking() {
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
+function answer(text) {
+  addMessage(text, "assistant");
+  speak(text);
+}
+
+function updateConnection() {
+  const online = navigator.onLine;
+
+  $("connectionStatus").textContent =
+    online ? "Интернет подключён" : "Нет подключения к интернету";
+
+  $("onlineDot").style.background =
+    online ? "#39d99b" : "#ff687d";
+}
+
+window.addEventListener("online", updateConnection);
+window.addEventListener("offline", updateConnection);
+
+async function updateDeviceInfo() {
+  const lines = [];
+
+  lines.push(
+    "Платформа: " + (navigator.platform || "неизвестно")
+  );
+
+  lines.push(
+    "Браузер: " + navigator.userAgent
+  );
+
+  lines.push(
+    "Интернет: " + (navigator.onLine ? "Да" : "Нет")
+  );
+
+  lines.push(
+    "Язык: " + navigator.language
+  );
+
+  if (navigator.getBattery) {
+    try {
+      const battery = await navigator.getBattery();
+
+      lines.push(
+        "Батарея: " + Math.round(battery.level * 100) + "%"
+      );
+
+      lines.push(
+        "Зарядка: " + (battery.charging ? "Да" : "Нет")
+      );
+
+      battery.addEventListener("levelchange", updateDeviceInfo);
+      battery.addEventListener("chargingchange", updateDeviceInfo);
+    } catch {
+      lines.push("Батарея: информация недоступна");
+    }
+  } else {
+    lines.push("Батарея: браузер не предоставляет данные");
   }
+
+  $("deviceStatus").textContent = lines.join("\n");
 }
 
-function sendMessage() {
-  const input = $("message");
-  const text = input.value.trim();
+function openWebsite(address) {
+  let url;
 
-  if (!text) return;
+  try {
+    url = new URL(address);
 
-  input.value = "";
-  addMessage(text, "user");
+    if (!["http:", "https:"].includes(url.protocol)) {
+      throw new Error("Недопустимый протокол");
+    }
+  } catch {
+    return false;
+  }
 
-  const answer = processCommand(text);
-
-  addMessage(answer, "bot");
+  window.open(url.href, "_blank", "noopener,noreferrer");
+  return true;
 }
-
-$("message").addEventListener("keydown", event => {
-  if (event.key === "Enter") sendMessage();
-});
 
 function processCommand(text) {
   const command = text.toLowerCase().trim();
 
-  if (command.includes("привет")) {
-    return "Привет! Чем могу помочь?";
+  if (
+    command === "привет" ||
+    command === "здравствуй"
+  ) {
+    return "Привет! Готов выполнять доступные команды планшета.";
+  }
+
+  if (
+    command === "помощь" ||
+    command === "команды"
+  ) {
+    return [
+      "Доступные команды:",
+      "",
+      "время — узнать время;",
+      "дата — узнать дату;",
+      "полный экран — включить полноэкранный режим;",
+      "вибрация — проверить вибрацию;",
+      "не выключай экран — включить блокировку сна страницы;",
+      "открой youtube — открыть YouTube;",
+      "открой google — открыть Google;",
+      "информация — сведения о планшете."
+    ].join("\n");
   }
 
   if (command.includes("время")) {
     return "Сейчас " + new Date().toLocaleTimeString("ru-RU");
   }
 
-  if (command.includes("дата") || command.includes("число")) {
+  if (command.includes("дата")) {
     return "Сегодня " + new Date().toLocaleDateString("ru-RU");
   }
 
-  if (command.startsWith("посчитай ")) {
-    const expression = text.slice("посчитай ".length);
-
-    try {
-      return "Результат: " + evaluateExpression(expression);
-    } catch {
-      return "Не удалось вычислить выражение. Проверь запись.";
-    }
+  if (
+    command.includes("информация") ||
+    command.includes("планшет")
+  ) {
+    updateDeviceInfo();
+    return "Обновляю информацию о планшете. Посмотри раздел состояния выше.";
   }
 
-  if (command.startsWith("создай заметку ")) {
-    const content = text.slice("создай заметку ".length).trim();
+  if (
+    command.includes("полный экран") ||
+    command.includes("на весь экран")
+  ) {
+    toggleFullscreen();
+    return "Запрос на включение полноэкранного режима отправлен. Если браузер разрешит, страница перейдёт в полный экран.";
+  }
 
-    if (!content) return "Напиши содержание заметки.";
-
-    notes.push({
-      text:content,
-      date:new Date().toLocaleString("ru-RU")
-    });
-
-    if (!storeData("chatgpt_pc_control_notes", notes)) {
-      notes.pop();
-      return "Не удалось сохранить заметку.";
+  if (command.includes("вибрация")) {
+    if ("vibrate" in navigator) {
+      navigator.vibrate([150, 80, 150]);
+      return "Отправлена команда вибрации. Результат зависит от поддержки устройства и браузера.";
     }
 
-    renderNotes();
-    return "Заметка сохранена.";
+    return "Браузер не поддерживает управление вибрацией.";
   }
 
-  if (command === "помощь") {
-    return "Доступные команды:\n" +
-      "время\n" +
-      "дата\n" +
-      "посчитай 2+2\n" +
-      "создай заметку текст\n\n" +
-      "Я пока не являюсь полноценной языковой моделью.";
+  if (
+    command.includes("не выключай экран") ||
+    command.includes("не гаси экран")
+  ) {
+    requestWakeLock();
+    return "Запрос на предотвращение выключения экрана отправлен.";
   }
 
-  return "Я пока не умею самостоятельно отвечать на произвольные вопросы. " +
-    "Попробуй команду «помощь». Для настоящего ИИ потребуется подключение языковой модели.";
+  if (command.includes("открой youtube")) {
+    openWebsite("https://www.youtube.com");
+    return "Открываю YouTube, если браузер разрешил новую вкладку.";
+  }
+
+  if (command.includes("открой google")) {
+    openWebsite("https://www.google.com");
+    return "Открываю Google, если браузер разрешил новую вкладку.";
+  }
+
+  return "Я пока не подключён к языковой модели ChatGPT и не могу отвечать на произвольные вопросы. Напиши «помощь», чтобы увидеть мои команды.";
 }
 
-function evaluateExpression(expression) {
-  const normalized = expression.replace(/\s/g, "").replace(/,/g, ".");
-  const tokens = normalized.match(/\d+(?:\.\d+)?|[()+\-*/]/g);
-
-  if (!tokens || tokens.join("") !== normalized) {
-    throw new Error("Некорректное выражение");
-  }
-
-  let position = 0;
-
-  function factor() {
-    const token = tokens[position++];
-
-    if (token === "+") return factor();
-    if (token === "-") return -factor();
-
-    if (token === "(") {
-      const value = sum();
-
-      if (tokens[position++] !== ")") {
-        throw new Error("Скобки");
-      }
-
-      return value;
-    }
-
-    const number = Number(token);
-
-    if (!Number.isFinite(number)) {
-      throw new Error("Число");
-    }
-
-    return number;
-  }
-
-  function product() {
-    let value = factor();
-
-    while (
-      tokens[position] === "*" ||
-      tokens[position] === "/"
-    ) {
-      const operator = tokens[position++];
-      const right = factor();
-
-      if (operator === "/" && right === 0) {
-        throw new Error("Деление на ноль");
-      }
-
-      value = operator === "*" ?
-        value * right :
-        value / right;
-    }
-
-    return value;
-  }
-
-  function sum() {
-    let value = product();
-
-    while (
-      tokens[position] === "+" ||
-      tokens[position] === "-"
-    ) {
-      const operator = tokens[position++];
-      const right = product();
-
-      value = operator === "+" ?
-        value + right :
-        value - right;
-    }
-
-    return value;
-  }
-
-  const result = sum();
-
-  if (position !== tokens.length || !Number.isFinite(result)) {
-    throw new Error("Ошибка вычисления");
-  }
-
-  return Number(result.toFixed(8));
-}
-
-function calculate() {
-  try {
-    $("calcResult").textContent =
-      "Результат: " + evaluateExpression($("calcInput").value);
-  } catch {
-    $("calcResult").textContent =
-      "Ошибка. Проверь математическое выражение.";
-  }
-}
-
-function clearCalculator() {
-  $("calcInput").value = "";
-  $("calcResult").textContent = "Результат появится здесь.";
-}
-
-function saveNote() {
-  const text = $("noteText").value.trim();
-
-  if (!text) {
-    alert("Сначала напиши заметку.");
-    return;
-  }
-
-  const note = {
-    text,
-    date:new Date().toLocaleString("ru-RU")
-  };
-
-  notes.push(note);
-
-  if (!storeData("chatgpt_pc_control_notes", notes)) {
-    notes.pop();
-    return;
-  }
-
-  $("noteText").value = "";
-  renderNotes();
-}
-
-function clearNote() {
-  $("noteText").value = "";
-}
-
-function deleteNote(index) {
-  const removed = notes.splice(index, 1);
-
-  if (!storeData("chatgpt_pc_control_notes", notes)) {
-    notes.splice(index, 0, ...removed);
-    return;
-  }
-
-  renderNotes();
-}
-
-function renderNotes() {
-  const list = $("notesList");
-  list.replaceChildren();
-
-  if (!notes.length) {
-    list.textContent = "Заметок пока нет.";
-    return;
-  }
-
-  notes.forEach((note, index) => {
-    const panel = document.createElement("div");
-    panel.className = "panel";
-
-    const content = document.createElement("p");
-    content.textContent = note.text;
-
-    const date = document.createElement("p");
-    date.className = "muted";
-    date.textContent = note.date;
-
-    const button = document.createElement("button");
-    button.className = "action danger";
-    button.textContent = "Удалить";
-    button.onclick = () => deleteNote(index);
-
-    panel.append(content, date, button);
-    list.appendChild(panel);
-  });
-}
-
-function addTask() {
-  const input = $("taskInput");
+function sendMessage() {
+  const input = $("messageInput");
   const text = input.value.trim();
 
   if (!text) return;
 
-  tasks.push({
-    text,
-    done:false
-  });
-
-  if (!storeData("chatgpt_pc_control_tasks", tasks)) {
-    tasks.pop();
-    return;
-  }
-
   input.value = "";
-  renderTasks();
+
+  addMessage(text, "user");
+
+  const response = processCommand(text);
+
+  answer(response);
 }
 
-function toggleTask(index) {
-  tasks[index].done = !tasks[index].done;
+$("sendButton").addEventListener("click", sendMessage);
 
-  if (!storeData("chatgpt_pc_control_tasks", tasks)) {
-    tasks[index].done = !tasks[index].done;
-    return;
+$("messageInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    sendMessage();
   }
-
-  renderTasks();
-}
-
-function deleteTask(index) {
-  const removed = tasks.splice(index, 1);
-
-  if (!storeData("chatgpt_pc_control_tasks", tasks)) {
-    tasks.splice(index, 0, ...removed);
-    return;
-  }
-
-  renderTasks();
-}
-
-function renderTasks() {
-  const list = $("tasksList");
-  list.replaceChildren();
-
-  if (!tasks.length) {
-    list.textContent = "Задач пока нет.";
-    return;
-  }
-
-  tasks.forEach((task, index) => {
-    const row = document.createElement("div");
-    row.className = "task" + (task.done ? " done" : "");
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.done;
-    checkbox.style.width = "20px";
-    checkbox.onchange = () => toggleTask(index);
-
-    const text = document.createElement("span");
-    text.textContent = task.text;
-
-    const button = document.createElement("button");
-    button.className = "action danger";
-    button.textContent = "×";
-    button.onclick = () => deleteTask(index);
-
-    row.append(checkbox, text, button);
-    list.appendChild(row);
-  });
-}
+});
 
 function startVoice() {
   const SpeechRecognition =
@@ -720,43 +477,134 @@ function startVoice() {
     window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    addMessage(
-      "Голосовое распознавание не поддерживается этим браузером.",
-      "bot"
-    );
+    answer("Голосовое распознавание не поддерживается этим браузером.");
     return;
   }
 
-  const recognition = new SpeechRecognition();
+  if (recognition) {
+    recognition.abort();
+  }
+
+  recognition = new SpeechRecognition();
 
   recognition.lang = "ru-RU";
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
 
-  recognition.onresult = event => {
-    $("message").value =
-      event.results[0][0].transcript;
+  recognition.onstart = () => {
+    $("voiceButton").textContent = "Слушаю...";
+  };
 
+  recognition.onresult = event => {
+    const text = event.results[0][0].transcript;
+
+    $("messageInput").value = text;
     sendMessage();
   };
 
-  recognition.onerror = () => {
+  recognition.onerror = event => {
     addMessage(
-      "Не удалось распознать речь. Проверь разрешение микрофона.",
-      "bot"
+      "Ошибка голосового ввода: " + event.error,
+      "assistant"
     );
   };
 
-  recognition.start();
+  recognition.onend = () => {
+    $("voiceButton").textContent = "Голос";
+  };
+
+  try {
+    recognition.start();
+  } catch {
+    addMessage(
+      "Не удалось запустить микрофон.",
+      "assistant"
+    );
+  }
 }
 
-$("deviceInfo").textContent =
-  "Браузер: " + navigator.userAgent +
-  "\nПлатформа: " + (navigator.platform || "не определена") +
-  "\nИнтернет: " + (navigator.onLine ? "подключён" : "отсутствует");
+$("voiceButton").addEventListener("click", startVoice);
 
-renderNotes();
-renderTasks();
+$("stopButton").addEventListener("click", () => {
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
+
+  if (recognition) {
+    recognition.abort();
+  }
+});
+
+async function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+      $("controlStatus").textContent = "Включён полноэкранный режим.";
+    } else {
+      await document.exitFullscreen();
+      $("controlStatus").textContent = "Полноэкранный режим выключен.";
+    }
+  } catch {
+    $("controlStatus").textContent =
+      "Браузер не разрешил полноэкранный режим.";
+  }
+}
+
+$("fullscreenButton").addEventListener("click", toggleFullscreen);
+
+$("vibrationButton").addEventListener("click", () => {
+  if ("vibrate" in navigator) {
+    navigator.vibrate([150, 80, 150]);
+
+    $("controlStatus").textContent =
+      "Команда вибрации отправлена.";
+  } else {
+    $("controlStatus").textContent =
+      "Вибрация не поддерживается браузером.";
+  }
+});
+
+async function requestWakeLock() {
+  if (!("wakeLock" in navigator)) {
+    $("controlStatus").textContent =
+      "Wake Lock не поддерживается этим браузером.";
+    return;
+  }
+
+  try {
+    wakeLock = await navigator.wakeLock.request("screen");
+
+    $("controlStatus").textContent =
+      "Экран будет оставаться включённым, пока разрешение активно.";
+
+    wakeLock.addEventListener("release", () => {
+      $("controlStatus").textContent =
+        "Разрешение на удержание экрана отключено.";
+    });
+  } catch {
+    $("controlStatus").textContent =
+      "Браузер не разрешил удерживать экран включённым.";
+  }
+}
+
+$("wakeButton").addEventListener("click", requestWakeLock);
+
+document.addEventListener("visibilitychange", async () => {
+  if (
+    document.visibilityState === "visible" &&
+    wakeLock &&
+    wakeLock.released
+  ) {
+    try {
+      wakeLock = await navigator.wakeLock.request("screen");
+    } catch {
+      wakeLock = null;
+    }
+  }
+});
+
+updateConnection();
+updateDeviceInfo();
 
 </script>
 
