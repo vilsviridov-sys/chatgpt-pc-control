@@ -3,179 +3,482 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1020">
-<title>ChatGPT PC Control</title>
+<meta name="theme-color" content="#090e1b">
+<title>JARVIS Tablet</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#090e1b;color:#edf2ff;font-family:Arial,sans-serif}
 header{padding:20px;background:#121c30;border-bottom:1px solid #293956}
-h1{font-size:22px;margin:0}
-.subtitle{color:#91a1bf;font-size:13px;margin-top:7px}
-main{max-width:900px;margin:auto;padding:20px}
-.panel{background:#121c30;border:1px solid #293956;border-radius:12px;padding:18px;margin-bottom:15px}
-.status{display:flex;align-items:center;gap:9px}
-.dot{width:10px;height:10px;border-radius:50%;background:#ffbd59}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0 0;color:#91a1bf;font-size:13px}
+nav{display:flex;gap:8px;padding:12px;overflow-x:auto;background:#0e1729}
+nav button{flex-shrink:0;background:#1b2942;color:#cbd7ef;border:0;padding:12px 16px;border-radius:9px}
+nav button.active{background:#6482ff;color:white}
+main{max-width:850px;margin:auto;padding:16px}
+.page{display:none}
+.page.active{display:block}
+.panel{background:#121c30;border:1px solid #293956;border-radius:13px;padding:17px;margin-bottom:15px}
+h2{font-size:19px;margin:0 0 14px}
+input,textarea{width:100%;padding:13px;background:#0b1426;color:white;border:1px solid #354766;border-radius:9px;font-size:15px}
+textarea{min-height:120px;resize:vertical}
+button{cursor:pointer;font-size:14px}
+.action{padding:12px 16px;border:0;border-radius:9px;background:#6482ff;color:white;font-weight:bold}
+.secondary{background:#263650;color:white}
+.danger{background:#632c3b;color:white}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.row input{flex:1;min-width:150px}
 .muted{color:#91a1bf;font-size:13px}
-label{display:block;margin:15px 0 7px;font-size:14px}
-input,textarea{width:100%;padding:12px;background:#0b1426;color:white;border:1px solid #354766;border-radius:8px}
-textarea{min-height:110px;resize:vertical}
-button{padding:11px 16px;border:0;border-radius:8px;background:#6482ff;color:white;font-weight:bold}
-button:disabled{opacity:.5}
-#output{white-space:pre-wrap;overflow-wrap:anywhere;background:#0b1426;padding:12px;border-radius:8px;min-height:55px}
+#chat{height:330px;overflow-y:auto;background:#0b1426;border-radius:10px;padding:12px;margin-bottom:12px}
+.msg{padding:11px;margin-bottom:9px;border-radius:9px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user{background:#263b61}
+.bot{background:#1a2940}
+.task{display:flex;gap:10px;align-items:center;padding:12px;background:#0b1426;border-radius:9px;margin-top:8px}
+.task span{flex:1;overflow-wrap:anywhere}
+.task.done span{text-decoration:line-through;color:#91a1bf}
+#clock{font-size:34px;font-weight:bold;margin:8px 0}
+footer{text-align:center;color:#687b9b;padding:25px;font-size:12px}
 </style>
 </head>
 <body>
+
 <header>
-  <h1>ChatGPT PC Control</h1>
-  <div class="subtitle">Панель подключения к Windows-агенту</div>
+<h1>JARVIS</h1>
+<p>Планшетный интеллектуальный помощник</p>
 </header>
 
+<nav>
+<button class="active" data-page="home">Главная</button>
+<button data-page="assistant">Помощник</button>
+<button data-page="notes">Заметки</button>
+<button data-page="tasks">Задачи</button>
+<button data-page="tools">Инструменты</button>
+</nav>
+
 <main>
-  <section class="panel">
-    <h2>Подключение</h2>
-    <div class="status">
-      <span class="dot" id="statusDot"></span>
-      <span id="statusText">Не подключено</span>
-    </div>
-    <p class="muted">Укажи адрес сервера агента, запущенного на ноутбуке.</p>
 
-    <label for="server">Адрес агента</label>
-    <input id="server" type="url" placeholder="http://192.168.1.10:8765">
+<section class="page active" id="home">
+<div class="panel">
+<p class="muted">ТЕКУЩЕЕ ВРЕМЯ</p>
+<div id="clock">--:--:--</div>
+<div id="date" class="muted"></div>
+</div>
 
-    <div style="margin-top:12px">
-      <button id="connectButton">Проверить подключение</button>
-    </div>
-  </section>
+<div class="panel">
+<h2>Система</h2>
+<p id="systemStatus">Панель запущена.</p>
+<p class="muted">Данные хранятся в памяти браузера на этом устройстве.</p>
+</div>
 
-  <section class="panel">
-    <h2>Команда</h2>
-    <p class="muted">Команда будет отправлена только после подтверждения.</p>
+<div class="panel">
+<h2>Быстрый запуск</h2>
+<div class="row">
+<button class="action" onclick="showPage('assistant')">Открыть помощника</button>
+<button class="action secondary" onclick="showPage('notes')">Мои заметки</button>
+</div>
+</div>
+</section>
 
-    <label for="command">Текст команды</label>
-    <textarea id="command" placeholder="Например: покажи список файлов в папке Документы"></textarea>
+<section class="page" id="assistant">
+<div class="panel">
+<h2>Диалог с JARVIS</h2>
+<div id="chat">
+<div class="msg bot">Привет! Я JARVIS. Пока я работаю локально и умею выполнять встроенные команды.</div>
+</div>
+<input id="message" placeholder="Напиши команду..." autocomplete="off">
+<div class="row">
+<button class="action" onclick="sendMessage()">Отправить</button>
+<button class="action secondary" onclick="startVoice()">Голос</button>
+<button class="action secondary" onclick="stopSpeaking()">Остановить звук</button>
+</div>
+<p class="muted">Примеры: «время», «дата», «посчитай 25*4», «создай заметку купить хлеб».</p>
+</div>
+</section>
 
-    <div style="margin-top:12px">
-      <button id="sendButton">Отправить команду</button>
-    </div>
-  </section>
+<section class="page" id="notes">
+<div class="panel">
+<h2>Заметки</h2>
+<textarea id="noteText" placeholder="Напиши свою заметку..."></textarea>
+<div class="row">
+<button class="action" onclick="saveNote()">Сохранить заметку</button>
+<button class="action secondary" onclick="clearNote()">Очистить поле</button>
+</div>
+</div>
+<div class="panel">
+<h2>Сохранённые заметки</h2>
+<div id="notesList"></div>
+</div>
+</section>
 
-  <section class="panel">
-    <h2>Ответ агента</h2>
-    <div id="output">Здесь появится результат запроса.</div>
-  </section>
+<section class="page" id="tasks">
+<div class="panel">
+<h2>Список задач</h2>
+<div class="row">
+<input id="taskInput" placeholder="Новая задача...">
+<button class="action" onclick="addTask()">Добавить</button>
+</div>
+<div id="tasksList"></div>
+</div>
+</section>
+
+<section class="page" id="tools">
+<div class="panel">
+<h2>Калькулятор</h2>
+<input id="calcInput" inputmode="decimal" placeholder="Например: (25+15)*3">
+<div class="row">
+<button class="action" onclick="calculate()">Посчитать</button>
+<button class="action secondary" onclick="document.getElementById('calcInput').value=''">Очистить</button>
+</div>
+<p id="calcResult">Результат появится здесь.</p>
+</div>
+
+<div class="panel">
+<h2>Информация об устройстве</h2>
+<p id="deviceInfo" class="muted"></p>
+</div>
+</section>
+
 </main>
+
+<footer>JARVIS Tablet · Версия 1.0</footer>
 
 <script>
 "use strict";
 
-const serverInput = document.getElementById("server");
-const commandInput = document.getElementById("command");
-const connectButton = document.getElementById("connectButton");
-const sendButton = document.getElementById("sendButton");
-const statusText = document.getElementById("statusText");
-const statusDot = document.getElementById("statusDot");
-const output = document.getElementById("output");
+const $ = id => document.getElementById(id);
 
-let connected = false;
-
-function setConnectionState(isConnected, message) {
-  connected = isConnected;
-  statusText.textContent = message;
-  statusDot.style.background = isConnected ? "#39d99b" : "#ff687d";
+function loadData(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
-function getServerAddress() {
-  const address = serverInput.value.trim();
-
-  if (!address) {
-    throw new Error("Укажи адрес агента.");
-  }
-
-  const parsed = new URL(address);
-
-  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-    throw new Error("Разрешены только HTTP и HTTPS.");
-  }
-
-  return parsed.origin;
+function storeData(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-async function requestAgent(path, options = {}) {
-  const address = getServerAddress();
+let notes = loadData("jarvis_notes", []);
+let tasks = loadData("jarvis_tasks", []);
 
-  const response = await fetch(address + path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers
-    }
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.toggle("active", page.id === name);
   });
 
-  const responseText = await response.text();
+  document.querySelectorAll("nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === name);
+  });
+}
 
-  if (!response.ok) {
-    throw new Error("Ошибка сервера: " + response.status + " " + responseText);
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+function updateClock() {
+  const now = new Date();
+  $("clock").textContent = now.toLocaleTimeString("ru-RU");
+  $("date").textContent = now.toLocaleDateString("ru-RU", {
+    weekday:"long",
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+function addMessage(text, type) {
+  const message = document.createElement("div");
+  message.className = "msg " + type;
+  message.textContent = text;
+  $("chat").appendChild(message);
+  $("chat").scrollTop = $("chat").scrollHeight;
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ru-RU";
+  speechSynthesis.speak(utterance);
+}
+
+function stopSpeaking() {
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+}
+
+function sendMessage() {
+  const input = $("message");
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = "";
+  addMessage(text, "user");
+
+  const answer = processCommand(text);
+  addMessage(answer, "bot");
+}
+
+$("message").addEventListener("keydown", event => {
+  if (event.key === "Enter") sendMessage();
+});
+
+function processCommand(text) {
+  const command = text.toLowerCase().trim();
+
+  if (command.includes("привет")) {
+    return "Привет! Чем могу помочь?";
   }
 
+  if (command.includes("время")) {
+    return "Сейчас " + new Date().toLocaleTimeString("ru-RU");
+  }
+
+  if (command.includes("дата") || command.includes("число")) {
+    return "Сегодня " + new Date().toLocaleDateString("ru-RU");
+  }
+
+  if (command.startsWith("посчитай ")) {
+    const expression = text.slice("посчитай ".length);
+    try {
+      return "Результат: " + evaluateExpression(expression);
+    } catch {
+      return "Не удалось вычислить выражение. Проверь запись.";
+    }
+  }
+
+  if (command.startsWith("создай заметку ")) {
+    const content = text.slice("создай заметку ".length).trim();
+    if (!content) return "Напиши содержание заметки.";
+    notes.push({text:content, date:new Date().toLocaleString("ru-RU")});
+    storeData("jarvis_notes", notes);
+    renderNotes();
+    return "Заметка сохранена.";
+  }
+
+  if (command === "помощь") {
+    return "Доступные команды:\nвремя\nдата\nпосчитай 2+2\nсоздай заметку текст\n\nЯ пока не являюсь полноценной языковой моделью.";
+  }
+
+  return "Я пока не умею самостоятельно отвечать на произвольные вопросы. Попробуй команду «помощь». Для настоящего ИИ потребуется подключение языковой модели.";
+}
+
+function evaluateExpression(expression) {
+  const tokens = expression.match(/\d+(?:[.,]\d+)?|[()+\-*/]/g);
+  if (!tokens || tokens.join("") !== expression.replace(/\s/g, "").replace(/,/g, ".")) {
+    throw new Error("Некорректное выражение");
+  }
+
+  let position = 0;
+
+  function factor() {
+    const token = tokens[position++];
+
+    if (token === "+") return factor();
+    if (token === "-") return -factor();
+
+    if (token === "(") {
+      const value = sum();
+      if (tokens[position++] !== ")") throw new Error("Скобки");
+      return value;
+    }
+
+    const number = Number(token);
+    if (!Number.isFinite(number)) throw new Error("Число");
+    return number;
+  }
+
+  function product() {
+    let value = factor();
+
+    while (tokens[position] === "*" || tokens[position] === "/") {
+      const operator = tokens[position++];
+      const right = factor();
+
+      if (operator === "/" && right === 0) throw new Error("Деление на ноль");
+
+      value = operator === "*" ? value * right : value / right;
+    }
+
+    return value;
+  }
+
+  function sum() {
+    let value = product();
+
+    while (tokens[position] === "+" || tokens[position] === "-") {
+      const operator = tokens[position++];
+      const right = product();
+      value = operator === "+" ? value + right : value - right;
+    }
+
+    return value;
+  }
+
+  const result = sum();
+
+  if (position !== tokens.length || !Number.isFinite(result)) {
+    throw new Error("Ошибка вычисления");
+  }
+
+  return Number(result.toFixed(8));
+}
+
+function calculate() {
   try {
-    return JSON.parse(responseText);
+    $("calcResult").textContent =
+      "Результат: " + evaluateExpression($("calcInput").value);
   } catch {
-    throw new Error("Сервер вернул некорректный JSON.");
+    $("calcResult").textContent = "Ошибка. Проверь математическое выражение.";
   }
 }
 
-connectButton.addEventListener("click", async () => {
-  connectButton.disabled = true;
-  setConnectionState(false, "Проверяем подключение...");
-  output.textContent = "Выполняется проверка...";
+function saveNote() {
+  const text = $("noteText").value.trim();
+  if (!text) return alert("Сначала напиши заметку.");
 
-  try {
-    const result = await requestAgent("/health");
-    setConnectionState(true, "Агент подключён");
-    output.textContent = JSON.stringify(result, null, 2);
-  } catch (error) {
-    setConnectionState(false, "Нет подключения");
-    output.textContent = error.message;
-  } finally {
-    connectButton.disabled = false;
-  }
-});
+  notes.push({
+    text,
+    date:new Date().toLocaleString("ru-RU")
+  });
 
-sendButton.addEventListener("click", async () => {
-  if (!connected) {
-    output.textContent = "Сначала проверь подключение к агенту.";
+  storeData("jarvis_notes", notes);
+  $("noteText").value = "";
+  renderNotes();
+}
+
+function clearNote() {
+  $("noteText").value = "";
+}
+
+function deleteNote(index) {
+  notes.splice(index, 1);
+  storeData("jarvis_notes", notes);
+  renderNotes();
+}
+
+function renderNotes() {
+  const list = $("notesList");
+  list.replaceChildren();
+
+  if (!notes.length) {
+    list.textContent = "Заметок пока нет.";
     return;
   }
 
-  const command = commandInput.value.trim();
+  notes.forEach((note, index) => {
+    const panel = document.createElement("div");
+    panel.className = "panel";
 
-  if (!command) {
-    output.textContent = "Введи команду.";
+    const content = document.createElement("p");
+    content.textContent = note.text;
+
+    const date = document.createElement("p");
+    date.className = "muted";
+    date.textContent = note.date;
+
+    const button = document.createElement("button");
+    button.className = "action danger";
+    button.textContent = "Удалить";
+    button.onclick = () => deleteNote(index);
+
+    panel.append(content, date, button);
+    list.appendChild(panel);
+  });
+}
+
+function addTask() {
+  const input = $("taskInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  tasks.push({text, done:false});
+  storeData("jarvis_tasks", tasks);
+  input.value = "";
+  renderTasks();
+}
+
+function toggleTask(index) {
+  tasks[index].done = !tasks[index].done;
+  storeData("jarvis_tasks", tasks);
+  renderTasks();
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  storeData("jarvis_tasks", tasks);
+  renderTasks();
+}
+
+function renderTasks() {
+  const list = $("tasksList");
+  list.replaceChildren();
+
+  if (!tasks.length) {
+    list.textContent = "Задач пока нет.";
     return;
   }
 
-  const approved = confirm(
-    "Отправить эту команду агенту?\n\n" + command
-  );
+  tasks.forEach((task, index) => {
+    const row = document.createElement("div");
+    row.className = "task" + (task.done ? " done" : "");
 
-  if (!approved) return;
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.done;
+    checkbox.style.width = "20px";
+    checkbox.onchange = () => toggleTask(index);
 
-  sendButton.disabled = true;
-  output.textContent = "Отправляем команду...";
+    const text = document.createElement("span");
+    text.textContent = task.text;
 
-  try {
-    const result = await requestAgent("/command", {
-      method: "POST",
-      body: JSON.stringify({ command })
-    });
+    const button = document.createElement("button");
+    button.className = "action danger";
+    button.textContent = "×";
+    button.onclick = () => deleteTask(index);
 
-    output.textContent = JSON.stringify(result, null, 2);
-  } catch (error) {
-    output.textContent = error.message;
-  } finally {
-    sendButton.disabled = false;
+    row.append(checkbox, text, button);
+    list.appendChild(row);
+  });
+}
+
+function startVoice() {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    addMessage("Голосовое распознавание не поддерживается этим браузером.", "bot");
+    return;
   }
-});
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "ru-RU";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = event => {
+    $("message").value = event.results[0][0].transcript;
+    sendMessage();
+  };
+
+  recognition.onerror = () => {
+    addMessage("Не удалось распознать речь. Проверь разрешение микрофона.", "bot");
+  };
+
+  recognition.start();
+}
+
+$("deviceInfo").textContent =
+  "Браузер: " + navigator.userAgent +
+  "\nПлатформа: " + (navigator.platform || "не определена") +
+  "\nИнтернет: " + (navigator.onLine ? "подключён" : "отсутствует");
+
+renderNotes();
+renderTasks();
 </script>
+
 </body>
-      </html>
+</html>
