@@ -39,7 +39,7 @@ header p {
 
 main {
     width: 100%;
-    max-width: 850px;
+    max-width: 900px;
     margin: auto;
     padding: 15px;
 }
@@ -49,25 +49,19 @@ main {
     border: 1px solid #293956;
     border-radius: 14px;
     padding: 16px;
-    margin-bottom: 14px;
-}
-
-h2 {
-    margin: 0 0 13px;
-    font-size: 18px;
 }
 
 #chat {
-    height: 55vh;
-    min-height: 300px;
-    max-height: 600px;
+    height: 65vh;
+    min-height: 350px;
+    max-height: 700px;
 
     overflow-y: auto;
 
     background: #091323;
     border-radius: 11px;
 
-    padding: 12px;
+    padding: 14px;
     margin-bottom: 12px;
 }
 
@@ -77,7 +71,7 @@ h2 {
 
     border-radius: 10px;
 
-    line-height: 1.45;
+    line-height: 1.5;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
@@ -92,8 +86,15 @@ h2 {
     margin-left: 25px;
 }
 
-input {
-    width: 100%;
+.input-area {
+    display: flex;
+    gap: 9px;
+}
+
+#messageInput {
+    flex: 1;
+
+    min-width: 0;
 
     padding: 14px;
 
@@ -107,7 +108,7 @@ input {
     outline: none;
 }
 
-input:focus {
+#messageInput:focus {
     border-color: #6482ff;
 }
 
@@ -115,7 +116,7 @@ button {
     border: 0;
     border-radius: 10px;
 
-    padding: 13px 17px;
+    padding: 13px 18px;
 
     background: #6482ff;
     color: white;
@@ -126,53 +127,27 @@ button {
     cursor: pointer;
 }
 
-button:active {
-    transform: scale(.98);
-}
-
-.secondary {
-    background: #263650;
-}
-
-.row {
-    display: flex;
-    gap: 9px;
-    flex-wrap: wrap;
-    margin-top: 11px;
-}
-
-.row button {
-    flex: 1;
-    min-width: 140px;
+button:disabled {
+    opacity: .5;
 }
 
 .status {
-    display: flex;
-    align-items: center;
-    gap: 9px;
+    margin-top: 10px;
 
-    color: #a9bad6;
+    color: #91a1bf;
     font-size: 13px;
 }
 
 .status-dot {
-    width: 9px;
-    height: 9px;
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    margin-right: 6px;
 
     border-radius: 50%;
-    background: #39d99b;
-}
-
-.info {
-    margin-top: 12px;
-
-    color: #91a1bf;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-#controlStatus {
-    min-height: 20px;
+    background: #f0ad4e;
 }
 
 footer {
@@ -184,18 +159,22 @@ footer {
     font-size: 12px;
 }
 
-@media (max-width: 450px) {
+@media (max-width: 600px) {
 
-    header h1 {
-        font-size: 20px;
+    .input-area {
+        flex-direction: column;
+    }
+
+    #messageInput {
+        width: 100%;
+    }
+
+    #sendButton {
+        width: 100%;
     }
 
     #chat {
-        height: 52vh;
-    }
-
-    .row button {
-        width: 100%;
+        height: 60vh;
     }
 }
 </style>
@@ -205,92 +184,49 @@ footer {
 
 <header>
     <h1>ChatGPT PC Control</h1>
-    <p>Помощник для управления планшетом</p>
+    <p>Интерфейс управления планшетом через ИИ</p>
 </header>
+
 
 <main>
 
     <section class="panel">
 
-        <h2>Состояние планшета</h2>
-
-        <div class="status">
-            <span class="status-dot" id="connectionDot"></span>
-            <span id="connectionStatus">Подключение проверяется</span>
-        </div>
-
-        <div
-            id="deviceStatus"
-            class="info">
-        </div>
-
-    </section>
-
-
-    <section class="panel">
-
-        <h2>Помощник</h2>
-
         <div id="chat">
 
             <div class="message assistant">
-                Привет! Я помощник ChatGPT PC Control.
-
-                Я могу выполнять доступные команды управления планшетом.
-
-                Напиши «помощь», чтобы посмотреть команды.
+                Подключение к ИИ пока не настроено.
             </div>
 
         </div>
 
 
-        <input
-            id="messageInput"
-            type="text"
-            placeholder="Введите команду..."
-            autocomplete="off"
-        >
+        <div class="input-area">
 
-
-        <div class="row">
+            <input
+                id="messageInput"
+                type="text"
+                placeholder="Напишите сообщение..."
+                autocomplete="off"
+            >
 
             <button id="sendButton">
                 Отправить
             </button>
 
-            <button
-                id="clearButton"
-                class="secondary">
-                Очистить чат
-            </button>
-
         </div>
 
-    </section>
 
+        <div class="status">
+            <span
+                class="status-dot"
+                id="statusDot">
+            </span>
 
-    <section class="panel">
-
-        <h2>Управление планшетом</h2>
-
-        <div class="row">
-
-            <button id="fullscreenButton">
-                Полный экран
-            </button>
-
-            <button
-                id="wakeButton"
-                class="secondary">
-                Не выключать экран
-            </button>
-
+            <span id="statusText">
+                ИИ не подключён
+            </span>
         </div>
-
-        <p
-            id="controlStatus"
-            class="info">
-        </p>
 
     </section>
 
@@ -306,61 +242,76 @@ footer {
 "use strict";
 
 
-const $ = id => document.getElementById(id);
+const messageInput =
+    document.getElementById("messageInput");
 
+const sendButton =
+    document.getElementById("sendButton");
 
-let wakeLock = null;
+const chat =
+    document.getElementById("chat");
 
-
-/* --------------------------------
-   ЧАТ
--------------------------------- */
 
 function addMessage(text, type) {
 
-    const message = document.createElement("div");
+    const message =
+        document.createElement("div");
 
-    message.className = "message " + type;
+    message.className =
+        "message " + type;
 
-    message.textContent = text;
+    message.textContent =
+        text;
 
-    $("chat").appendChild(message);
+    chat.appendChild(message);
 
-    $("chat").scrollTop = $("chat").scrollHeight;
+    chat.scrollTop =
+        chat.scrollHeight;
 }
 
 
-/* --------------------------------
-   ОТПРАВКА КОМАНДЫ
--------------------------------- */
-
 function sendMessage() {
 
-    const input = $("messageInput");
-
-    const text = input.value.trim();
+    const text =
+        messageInput.value.trim();
 
     if (!text) {
         return;
     }
 
-    input.value = "";
 
-    addMessage(text, "user");
+    /*
+     * Здесь НЕ происходит локальная
+     * обработка команд.
+     *
+     * Сообщение должно передаваться
+     * подключённой модели ИИ.
+     */
 
-    const response = processCommand(text);
+    addMessage(
+        text,
+        "user"
+    );
 
-    addMessage(response, "assistant");
+
+    messageInput.value = "";
+
+
+    /*
+     * Подключение ИИ будет добавлено
+     * следующим этапом.
+     */
+
 }
 
 
-$("sendButton").addEventListener(
+sendButton.addEventListener(
     "click",
     sendMessage
 );
 
 
-$("messageInput").addEventListener(
+messageInput.addEventListener(
     "keydown",
     event => {
 
@@ -373,366 +324,7 @@ $("messageInput").addEventListener(
     }
 );
 
-
-/* --------------------------------
-   ОЧИСТКА ЧАТА
--------------------------------- */
-
-$("clearButton").addEventListener(
-    "click",
-    () => {
-
-        $("chat").replaceChildren();
-
-    }
-);
-
-
-/* --------------------------------
-   КОМАНДЫ ПОМОЩНИКА
--------------------------------- */
-
-function processCommand(text) {
-
-    const command =
-        text.toLowerCase().trim();
-
-
-    if (
-        command === "привет" ||
-        command === "здравствуй"
-    ) {
-
-        return "Привет! Готов к работе.";
-
-    }
-
-
-    if (
-        command === "помощь" ||
-        command === "команды"
-    ) {
-
-        return [
-            "Доступные команды:",
-            "",
-            "время",
-            "дата",
-            "информация",
-            "полный экран",
-            "не выключай экран",
-            "открой google",
-            "открой youtube"
-        ].join("\n");
-
-    }
-
-
-    if (command.includes("время")) {
-
-        return (
-            "Сейчас " +
-            new Date().toLocaleTimeString("ru-RU")
-        );
-
-    }
-
-
-    if (command.includes("дата")) {
-
-        return (
-            "Сегодня " +
-            new Date().toLocaleDateString("ru-RU")
-        );
-
-    }
-
-
-    if (
-        command.includes("информация") ||
-        command.includes("сведения")
-    ) {
-
-        updateDeviceInfo();
-
-        return "Информация о планшете обновлена.";
-
-    }
-
-
-    if (
-        command.includes("полный экран") ||
-        command.includes("на весь экран")
-    ) {
-
-        enableFullscreen();
-
-        return "Включаю полноэкранный режим.";
-
-    }
-
-
-    if (
-        command.includes("не выключай экран") ||
-        command.includes("не гаси экран")
-    ) {
-
-        requestWakeLock();
-
-        return "Включаю режим удержания экрана.";
-
-    }
-
-
-    if (command.includes("открой google")) {
-
-        openWebsite(
-            "https://www.google.com"
-        );
-
-        return "Открываю Google.";
-
-    }
-
-
-    if (command.includes("открой youtube")) {
-
-        openWebsite(
-            "https://www.youtube.com"
-        );
-
-        return "Открываю YouTube.";
-
-    }
-
-
-    return "Команда не распознана.";
-}
-
-
-/* --------------------------------
-   ОТКРЫТИЕ САЙТОВ
--------------------------------- */
-
-function openWebsite(url) {
-
-    window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
-    );
-
-}
-
-
-/* --------------------------------
-   ПОЛНЫЙ ЭКРАН
--------------------------------- */
-
-async function enableFullscreen() {
-
-    if (document.fullscreenElement) {
-        return;
-    }
-
-    try {
-
-        await document.documentElement.requestFullscreen();
-
-        $("controlStatus").textContent =
-            "Полноэкранный режим включён.";
-
-    } catch {
-
-        $("controlStatus").textContent = "";
-
-    }
-
-}
-
-
-/* --------------------------------
-   НЕ ВЫКЛЮЧАТЬ ЭКРАН
--------------------------------- */
-
-async function requestWakeLock() {
-
-    if (!("wakeLock" in navigator)) {
-
-        $("controlStatus").textContent = "";
-
-        return;
-
-    }
-
-
-    try {
-
-        wakeLock =
-            await navigator.wakeLock.request(
-                "screen"
-            );
-
-        $("controlStatus").textContent = "";
-
-    } catch {
-
-        $("controlStatus").textContent = "";
-
-    }
-
-}
-
-
-/* --------------------------------
-   ИНФОРМАЦИЯ ОБ УСТРОЙСТВЕ
--------------------------------- */
-
-async function updateDeviceInfo() {
-
-    const information = [];
-
-
-    information.push(
-        "Платформа: " +
-        (navigator.platform || "неизвестно")
-    );
-
-
-    information.push(
-        "Язык: " +
-        navigator.language
-    );
-
-
-    information.push(
-        "Интернет: " +
-        (
-            navigator.onLine
-                ? "подключён"
-                : "отсутствует"
-        )
-    );
-
-
-    if (navigator.getBattery) {
-
-        try {
-
-            const battery =
-                await navigator.getBattery();
-
-
-            information.push(
-                "Батарея: " +
-                Math.round(
-                    battery.level * 100
-                ) +
-                "%"
-            );
-
-
-            information.push(
-                "Зарядка: " +
-                (
-                    battery.charging
-                        ? "да"
-                        : "нет"
-                )
-            );
-
-        } catch {
-
-            /* Ничего не показываем */
-
-        }
-
-    }
-
-
-    $("deviceStatus").textContent =
-        information.join("\n");
-
-}
-
-
-/* --------------------------------
-   СОСТОЯНИЕ ИНТЕРНЕТА
--------------------------------- */
-
-function updateConnectionStatus() {
-
-    const online = navigator.onLine;
-
-
-    $("connectionStatus").textContent =
-        online
-            ? "Интернет подключён"
-            : "Нет подключения к интернету";
-
-
-    $("connectionDot").style.background =
-        online
-            ? "#39d99b"
-            : "#ff687d";
-
-}
-
-
-window.addEventListener(
-    "online",
-    updateConnectionStatus
-);
-
-
-window.addEventListener(
-    "offline",
-    updateConnectionStatus
-);
-
-
-/* --------------------------------
-   ВОЗВРАТ К WAKE LOCK
--------------------------------- */
-
-document.addEventListener(
-    "visibilitychange",
-    async () => {
-
-        if (
-            document.visibilityState === "visible" &&
-            wakeLock &&
-            wakeLock.released
-        ) {
-
-            try {
-
-                wakeLock =
-                    await navigator.wakeLock.request(
-                        "screen"
-                    );
-
-            } catch {
-
-                wakeLock = null;
-
-            }
-
-        }
-
-    }
-);
-
-
-/* --------------------------------
-   ЗАПУСК
--------------------------------- */
-
-updateConnectionStatus();
-
-updateDeviceInfo();
-
 </script>
 
 </body>
-  </html>
+</html>
