@@ -4,170 +4,199 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080e1b">
+
 <title>ChatGPT PC Control</title>
 
 <style>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  background: #080e1b;
-  color: #edf2ff;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: #080e1b;
+    color: #edf2ff;
+    font-family: Arial, sans-serif;
 }
 
 header {
-  padding: 19px;
-  background: #111c30;
-  border-bottom: 1px solid #293956;
+    padding: 20px;
+    background: #111c30;
+    border-bottom: 1px solid #293956;
 }
 
 header h1 {
-  margin: 0;
-  font-size: 22px;
+    margin: 0;
+    font-size: 23px;
 }
 
 header p {
-  margin: 7px 0 0;
-  color: #91a1bf;
-  font-size: 13px;
+    margin: 7px 0 0;
+    color: #91a1bf;
+    font-size: 13px;
 }
 
 main {
-  max-width: 850px;
-  margin: auto;
-  padding: 15px;
+    width: 100%;
+    max-width: 850px;
+    margin: auto;
+    padding: 15px;
 }
 
 .panel {
-  background: #111c30;
-  border: 1px solid #293956;
-  border-radius: 13px;
-  padding: 16px;
-  margin-bottom: 14px;
-}
-
-.status {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 13px;
-  color: #a9bad6;
-  margin: 10px 0;
-}
-
-.dot {
-  width: 9px;
-  height: 9px;
-  background: #39d99b;
-  border-radius: 50%;
-}
-
-#chat {
-  height: 48vh;
-  min-height: 260px;
-  max-height: 500px;
-  overflow-y: auto;
-  padding: 12px;
-  background: #091323;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-
-.message {
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  line-height: 1.45;
-}
-
-.user {
-  background: #263b61;
-  margin-left: 25px;
-}
-
-.assistant {
-  background: #1a2940;
-  margin-right: 25px;
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #354766;
-  border-radius: 10px;
-  background: #091323;
-  color: white;
-  font-size: 16px;
-  outline: none;
-}
-
-button {
-  border: 0;
-  border-radius: 9px;
-  padding: 13px 15px;
-  background: #6482ff;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: .5;
-}
-
-.secondary {
-  background: #263650;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 11px;
-}
-
-.row button {
-  flex: 1;
+    background: #111c30;
+    border: 1px solid #293956;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
 }
 
 h2 {
-  font-size: 17px;
-  margin: 0 0 12px;
+    margin: 0 0 13px;
+    font-size: 18px;
+}
+
+#chat {
+    height: 55vh;
+    min-height: 300px;
+    max-height: 600px;
+
+    overflow-y: auto;
+
+    background: #091323;
+    border-radius: 11px;
+
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.message {
+    padding: 12px;
+    margin-bottom: 10px;
+
+    border-radius: 10px;
+
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.assistant {
+    background: #1a2940;
+    margin-right: 25px;
+}
+
+.user {
+    background: #263b61;
+    margin-left: 25px;
+}
+
+input {
+    width: 100%;
+
+    padding: 14px;
+
+    background: #091323;
+    color: white;
+
+    border: 1px solid #354766;
+    border-radius: 10px;
+
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #6482ff;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+
+    padding: 13px 17px;
+
+    background: #6482ff;
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+.secondary {
+    background: #263650;
+}
+
+.row {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 11px;
+}
+
+.row button {
+    flex: 1;
+    min-width: 140px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #a9bad6;
+    font-size: 13px;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+    background: #39d99b;
 }
 
 .info {
-  color: #91a1bf;
-  font-size: 13px;
-  line-height: 1.6;
+    margin-top: 12px;
+
+    color: #91a1bf;
+    font-size: 13px;
+    line-height: 1.6;
 }
 
-#deviceStatus {
-  line-height: 1.8;
-  font-size: 14px;
+#controlStatus {
+    min-height: 20px;
 }
 
 footer {
-  text-align: center;
-  color: #687b9b;
-  padding: 20px;
-  font-size: 12px;
+    padding: 20px;
+
+    text-align: center;
+
+    color: #687b9b;
+    font-size: 12px;
 }
 
-@media(max-width:450px) {
-  header h1 {
-    font-size: 19px;
-  }
+@media (max-width: 450px) {
 
-  .row button {
-    min-width: 40%;
-  }
+    header h1 {
+        font-size: 20px;
+    }
+
+    #chat {
+        height: 52vh;
+    }
+
+    .row button {
+        width: 100%;
+    }
 }
 </style>
 </head>
@@ -175,435 +204,532 @@ footer {
 <body>
 
 <header>
-  <h1>ChatGPT PC Control</h1>
-  <p>Планшетный помощник</p>
+    <h1>ChatGPT PC Control</h1>
+    <p>Помощник для управления планшетом</p>
 </header>
 
 <main>
 
-  <section class="panel">
-    <h2>Состояние планшета</h2>
+    <section class="panel">
 
-    <div class="status">
-      <span class="dot" id="onlineDot"></span>
-      <span id="connectionStatus">Проверка подключения...</span>
-    </div>
+        <h2>Состояние планшета</h2>
 
-    <div id="deviceStatus" class="info">
-      Получение информации...
-    </div>
-  </section>
+        <div class="status">
+            <span class="status-dot" id="connectionDot"></span>
+            <span id="connectionStatus">Подключение проверяется</span>
+        </div>
 
-  <section class="panel">
-    <h2>Помощник</h2>
+        <div
+            id="deviceStatus"
+            class="info">
+        </div>
 
-    <div id="chat">
-      <div class="message assistant">
-        Привет! Я помощник ChatGPT PC Control.
+    </section>
 
-        Я могу выполнять некоторые действия в браузере планшета.
 
-        Напиши «помощь», чтобы увидеть доступные команды.
-      </div>
-    </div>
+    <section class="panel">
 
-    <input
-      id="messageInput"
-      type="text"
-      placeholder="Напиши команду..."
-      autocomplete="off"
-    >
+        <h2>Помощник</h2>
 
-    <div class="row">
-      <button id="sendButton">Отправить</button>
-      <button id="voiceButton" class="secondary">Голос</button>
-    </div>
+        <div id="chat">
 
-    <div class="row">
-      <button id="stopButton" class="secondary">
-        Остановить голос
-      </button>
-    </div>
-  </section>
+            <div class="message assistant">
+                Привет! Я помощник ChatGPT PC Control.
 
-  <section class="panel">
-    <h2>Управление планшетом</h2>
+                Я могу выполнять доступные команды управления планшетом.
 
-    <div class="row">
-      <button id="fullscreenButton">
-        Полный экран
-      </button>
+                Напиши «помощь», чтобы посмотреть команды.
+            </div>
 
-      <button id="vibrationButton" class="secondary">
-        Проверить вибрацию
-      </button>
-    </div>
+        </div>
 
-    <div class="row">
-      <button id="wakeButton" class="secondary">
-        Не выключать экран
-      </button>
-    </div>
 
-    <p id="controlStatus" class="info">
-      Управление доступно в пределах возможностей браузера.
-    </p>
-  </section>
+        <input
+            id="messageInput"
+            type="text"
+            placeholder="Введите команду..."
+            autocomplete="off"
+        >
+
+
+        <div class="row">
+
+            <button id="sendButton">
+                Отправить
+            </button>
+
+            <button
+                id="clearButton"
+                class="secondary">
+                Очистить чат
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>Управление планшетом</h2>
+
+        <div class="row">
+
+            <button id="fullscreenButton">
+                Полный экран
+            </button>
+
+            <button
+                id="wakeButton"
+                class="secondary">
+                Не выключать экран
+            </button>
+
+        </div>
+
+        <p
+            id="controlStatus"
+            class="info">
+        </p>
+
+    </section>
 
 </main>
 
+
 <footer>
-  ChatGPT PC Control · Версия 2.0
+    ChatGPT PC Control
 </footer>
+
 
 <script>
 "use strict";
 
+
 const $ = id => document.getElementById(id);
 
+
 let wakeLock = null;
-let recognition = null;
+
+
+/* --------------------------------
+   ЧАТ
+-------------------------------- */
 
 function addMessage(text, type) {
-  const element = document.createElement("div");
 
-  element.className = "message " + type;
-  element.textContent = text;
+    const message = document.createElement("div");
 
-  $("chat").appendChild(element);
-  $("chat").scrollTop = $("chat").scrollHeight;
+    message.className = "message " + type;
+
+    message.textContent = text;
+
+    $("chat").appendChild(message);
+
+    $("chat").scrollTop = $("chat").scrollHeight;
 }
 
-function speak(text) {
-  if (!("speechSynthesis" in window)) {
-    return;
-  }
 
-  speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "ru-RU";
-  utterance.rate = 1;
-
-  speechSynthesis.speak(utterance);
-}
-
-function answer(text) {
-  addMessage(text, "assistant");
-  speak(text);
-}
-
-function updateConnection() {
-  const online = navigator.onLine;
-
-  $("connectionStatus").textContent =
-    online ? "Интернет подключён" : "Нет подключения к интернету";
-
-  $("onlineDot").style.background =
-    online ? "#39d99b" : "#ff687d";
-}
-
-window.addEventListener("online", updateConnection);
-window.addEventListener("offline", updateConnection);
-
-async function updateDeviceInfo() {
-  const lines = [];
-
-  lines.push(
-    "Платформа: " + (navigator.platform || "неизвестно")
-  );
-
-  lines.push(
-    "Браузер: " + navigator.userAgent
-  );
-
-  lines.push(
-    "Интернет: " + (navigator.onLine ? "Да" : "Нет")
-  );
-
-  lines.push(
-    "Язык: " + navigator.language
-  );
-
-  if (navigator.getBattery) {
-    try {
-      const battery = await navigator.getBattery();
-
-      lines.push(
-        "Батарея: " + Math.round(battery.level * 100) + "%"
-      );
-
-      lines.push(
-        "Зарядка: " + (battery.charging ? "Да" : "Нет")
-      );
-
-      battery.addEventListener("levelchange", updateDeviceInfo);
-      battery.addEventListener("chargingchange", updateDeviceInfo);
-    } catch {
-      lines.push("Батарея: информация недоступна");
-    }
-  } else {
-    lines.push("Батарея: браузер не предоставляет данные");
-  }
-
-  $("deviceStatus").textContent = lines.join("\n");
-}
-
-function openWebsite(address) {
-  let url;
-
-  try {
-    url = new URL(address);
-
-    if (!["http:", "https:"].includes(url.protocol)) {
-      throw new Error("Недопустимый протокол");
-    }
-  } catch {
-    return false;
-  }
-
-  window.open(url.href, "_blank", "noopener,noreferrer");
-  return true;
-}
-
-function processCommand(text) {
-  const command = text.toLowerCase().trim();
-
-  if (
-    command === "привет" ||
-    command === "здравствуй"
-  ) {
-    return "Привет! Готов выполнять доступные команды планшета.";
-  }
-
-  if (
-    command === "помощь" ||
-    command === "команды"
-  ) {
-    return [
-      "Доступные команды:",
-      "",
-      "время — узнать время;",
-      "дата — узнать дату;",
-      "полный экран — включить полноэкранный режим;",
-      "вибрация — проверить вибрацию;",
-      "не выключай экран — включить блокировку сна страницы;",
-      "открой youtube — открыть YouTube;",
-      "открой google — открыть Google;",
-      "информация — сведения о планшете."
-    ].join("\n");
-  }
-
-  if (command.includes("время")) {
-    return "Сейчас " + new Date().toLocaleTimeString("ru-RU");
-  }
-
-  if (command.includes("дата")) {
-    return "Сегодня " + new Date().toLocaleDateString("ru-RU");
-  }
-
-  if (
-    command.includes("информация") ||
-    command.includes("планшет")
-  ) {
-    updateDeviceInfo();
-    return "Обновляю информацию о планшете. Посмотри раздел состояния выше.";
-  }
-
-  if (
-    command.includes("полный экран") ||
-    command.includes("на весь экран")
-  ) {
-    toggleFullscreen();
-    return "Запрос на включение полноэкранного режима отправлен. Если браузер разрешит, страница перейдёт в полный экран.";
-  }
-
-  if (command.includes("вибрация")) {
-    if ("vibrate" in navigator) {
-      navigator.vibrate([150, 80, 150]);
-      return "Отправлена команда вибрации. Результат зависит от поддержки устройства и браузера.";
-    }
-
-    return "Браузер не поддерживает управление вибрацией.";
-  }
-
-  if (
-    command.includes("не выключай экран") ||
-    command.includes("не гаси экран")
-  ) {
-    requestWakeLock();
-    return "Запрос на предотвращение выключения экрана отправлен.";
-  }
-
-  if (command.includes("открой youtube")) {
-    openWebsite("https://www.youtube.com");
-    return "Открываю YouTube, если браузер разрешил новую вкладку.";
-  }
-
-  if (command.includes("открой google")) {
-    openWebsite("https://www.google.com");
-    return "Открываю Google, если браузер разрешил новую вкладку.";
-  }
-
-  return "Я пока не подключён к языковой модели ChatGPT и не могу отвечать на произвольные вопросы. Напиши «помощь», чтобы увидеть мои команды.";
-}
+/* --------------------------------
+   ОТПРАВКА КОМАНДЫ
+-------------------------------- */
 
 function sendMessage() {
-  const input = $("messageInput");
-  const text = input.value.trim();
 
-  if (!text) return;
+    const input = $("messageInput");
 
-  input.value = "";
+    const text = input.value.trim();
 
-  addMessage(text, "user");
-
-  const response = processCommand(text);
-
-  answer(response);
-}
-
-$("sendButton").addEventListener("click", sendMessage);
-
-$("messageInput").addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    sendMessage();
-  }
-});
-
-function startVoice() {
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    answer("Голосовое распознавание не поддерживается этим браузером.");
-    return;
-  }
-
-  if (recognition) {
-    recognition.abort();
-  }
-
-  recognition = new SpeechRecognition();
-
-  recognition.lang = "ru-RU";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
-  recognition.onstart = () => {
-    $("voiceButton").textContent = "Слушаю...";
-  };
-
-  recognition.onresult = event => {
-    const text = event.results[0][0].transcript;
-
-    $("messageInput").value = text;
-    sendMessage();
-  };
-
-  recognition.onerror = event => {
-    addMessage(
-      "Ошибка голосового ввода: " + event.error,
-      "assistant"
-    );
-  };
-
-  recognition.onend = () => {
-    $("voiceButton").textContent = "Голос";
-  };
-
-  try {
-    recognition.start();
-  } catch {
-    addMessage(
-      "Не удалось запустить микрофон.",
-      "assistant"
-    );
-  }
-}
-
-$("voiceButton").addEventListener("click", startVoice);
-
-$("stopButton").addEventListener("click", () => {
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
-  }
-
-  if (recognition) {
-    recognition.abort();
-  }
-});
-
-async function toggleFullscreen() {
-  try {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-      $("controlStatus").textContent = "Включён полноэкранный режим.";
-    } else {
-      await document.exitFullscreen();
-      $("controlStatus").textContent = "Полноэкранный режим выключен.";
+    if (!text) {
+        return;
     }
-  } catch {
-    $("controlStatus").textContent =
-      "Браузер не разрешил полноэкранный режим.";
-  }
+
+    input.value = "";
+
+    addMessage(text, "user");
+
+    const response = processCommand(text);
+
+    addMessage(response, "assistant");
 }
 
-$("fullscreenButton").addEventListener("click", toggleFullscreen);
 
-$("vibrationButton").addEventListener("click", () => {
-  if ("vibrate" in navigator) {
-    navigator.vibrate([150, 80, 150]);
+$("sendButton").addEventListener(
+    "click",
+    sendMessage
+);
 
-    $("controlStatus").textContent =
-      "Команда вибрации отправлена.";
-  } else {
-    $("controlStatus").textContent =
-      "Вибрация не поддерживается браузером.";
-  }
-});
+
+$("messageInput").addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* --------------------------------
+   ОЧИСТКА ЧАТА
+-------------------------------- */
+
+$("clearButton").addEventListener(
+    "click",
+    () => {
+
+        $("chat").replaceChildren();
+
+    }
+);
+
+
+/* --------------------------------
+   КОМАНДЫ ПОМОЩНИКА
+-------------------------------- */
+
+function processCommand(text) {
+
+    const command =
+        text.toLowerCase().trim();
+
+
+    if (
+        command === "привет" ||
+        command === "здравствуй"
+    ) {
+
+        return "Привет! Готов к работе.";
+
+    }
+
+
+    if (
+        command === "помощь" ||
+        command === "команды"
+    ) {
+
+        return [
+            "Доступные команды:",
+            "",
+            "время",
+            "дата",
+            "информация",
+            "полный экран",
+            "не выключай экран",
+            "открой google",
+            "открой youtube"
+        ].join("\n");
+
+    }
+
+
+    if (command.includes("время")) {
+
+        return (
+            "Сейчас " +
+            new Date().toLocaleTimeString("ru-RU")
+        );
+
+    }
+
+
+    if (command.includes("дата")) {
+
+        return (
+            "Сегодня " +
+            new Date().toLocaleDateString("ru-RU")
+        );
+
+    }
+
+
+    if (
+        command.includes("информация") ||
+        command.includes("сведения")
+    ) {
+
+        updateDeviceInfo();
+
+        return "Информация о планшете обновлена.";
+
+    }
+
+
+    if (
+        command.includes("полный экран") ||
+        command.includes("на весь экран")
+    ) {
+
+        enableFullscreen();
+
+        return "Включаю полноэкранный режим.";
+
+    }
+
+
+    if (
+        command.includes("не выключай экран") ||
+        command.includes("не гаси экран")
+    ) {
+
+        requestWakeLock();
+
+        return "Включаю режим удержания экрана.";
+
+    }
+
+
+    if (command.includes("открой google")) {
+
+        openWebsite(
+            "https://www.google.com"
+        );
+
+        return "Открываю Google.";
+
+    }
+
+
+    if (command.includes("открой youtube")) {
+
+        openWebsite(
+            "https://www.youtube.com"
+        );
+
+        return "Открываю YouTube.";
+
+    }
+
+
+    return "Команда не распознана.";
+}
+
+
+/* --------------------------------
+   ОТКРЫТИЕ САЙТОВ
+-------------------------------- */
+
+function openWebsite(url) {
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* --------------------------------
+   ПОЛНЫЙ ЭКРАН
+-------------------------------- */
+
+async function enableFullscreen() {
+
+    if (document.fullscreenElement) {
+        return;
+    }
+
+    try {
+
+        await document.documentElement.requestFullscreen();
+
+        $("controlStatus").textContent =
+            "Полноэкранный режим включён.";
+
+    } catch {
+
+        $("controlStatus").textContent = "";
+
+    }
+
+}
+
+
+/* --------------------------------
+   НЕ ВЫКЛЮЧАТЬ ЭКРАН
+-------------------------------- */
 
 async function requestWakeLock() {
-  if (!("wakeLock" in navigator)) {
-    $("controlStatus").textContent =
-      "Wake Lock не поддерживается этим браузером.";
-    return;
-  }
 
-  try {
-    wakeLock = await navigator.wakeLock.request("screen");
+    if (!("wakeLock" in navigator)) {
 
-    $("controlStatus").textContent =
-      "Экран будет оставаться включённым, пока разрешение активно.";
+        $("controlStatus").textContent = "";
 
-    wakeLock.addEventListener("release", () => {
-      $("controlStatus").textContent =
-        "Разрешение на удержание экрана отключено.";
-    });
-  } catch {
-    $("controlStatus").textContent =
-      "Браузер не разрешил удерживать экран включённым.";
-  }
+        return;
+
+    }
+
+
+    try {
+
+        wakeLock =
+            await navigator.wakeLock.request(
+                "screen"
+            );
+
+        $("controlStatus").textContent = "";
+
+    } catch {
+
+        $("controlStatus").textContent = "";
+
+    }
+
 }
 
-$("wakeButton").addEventListener("click", requestWakeLock);
 
-document.addEventListener("visibilitychange", async () => {
-  if (
-    document.visibilityState === "visible" &&
-    wakeLock &&
-    wakeLock.released
-  ) {
-    try {
-      wakeLock = await navigator.wakeLock.request("screen");
-    } catch {
-      wakeLock = null;
+/* --------------------------------
+   ИНФОРМАЦИЯ ОБ УСТРОЙСТВЕ
+-------------------------------- */
+
+async function updateDeviceInfo() {
+
+    const information = [];
+
+
+    information.push(
+        "Платформа: " +
+        (navigator.platform || "неизвестно")
+    );
+
+
+    information.push(
+        "Язык: " +
+        navigator.language
+    );
+
+
+    information.push(
+        "Интернет: " +
+        (
+            navigator.onLine
+                ? "подключён"
+                : "отсутствует"
+        )
+    );
+
+
+    if (navigator.getBattery) {
+
+        try {
+
+            const battery =
+                await navigator.getBattery();
+
+
+            information.push(
+                "Батарея: " +
+                Math.round(
+                    battery.level * 100
+                ) +
+                "%"
+            );
+
+
+            information.push(
+                "Зарядка: " +
+                (
+                    battery.charging
+                        ? "да"
+                        : "нет"
+                )
+            );
+
+        } catch {
+
+            /* Ничего не показываем */
+
+        }
+
     }
-  }
-});
 
-updateConnection();
+
+    $("deviceStatus").textContent =
+        information.join("\n");
+
+}
+
+
+/* --------------------------------
+   СОСТОЯНИЕ ИНТЕРНЕТА
+-------------------------------- */
+
+function updateConnectionStatus() {
+
+    const online = navigator.onLine;
+
+
+    $("connectionStatus").textContent =
+        online
+            ? "Интернет подключён"
+            : "Нет подключения к интернету";
+
+
+    $("connectionDot").style.background =
+        online
+            ? "#39d99b"
+            : "#ff687d";
+
+}
+
+
+window.addEventListener(
+    "online",
+    updateConnectionStatus
+);
+
+
+window.addEventListener(
+    "offline",
+    updateConnectionStatus
+);
+
+
+/* --------------------------------
+   ВОЗВРАТ К WAKE LOCK
+-------------------------------- */
+
+document.addEventListener(
+    "visibilitychange",
+    async () => {
+
+        if (
+            document.visibilityState === "visible" &&
+            wakeLock &&
+            wakeLock.released
+        ) {
+
+            try {
+
+                wakeLock =
+                    await navigator.wakeLock.request(
+                        "screen"
+                    );
+
+            } catch {
+
+                wakeLock = null;
+
+            }
+
+        }
+
+    }
+);
+
+
+/* --------------------------------
+   ЗАПУСК
+-------------------------------- */
+
+updateConnectionStatus();
+
 updateDeviceInfo();
 
 </script>
